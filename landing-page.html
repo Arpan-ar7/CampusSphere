@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CampusSphere - Welcome</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="landing-page.css">
+<body class="antialiased">
+
+    <div id="app" class="min-h-screen">
+        
+        <div id="pre-login-section">
+            
+            <header id="pre-login-header" class="fixed top-0 left-0 right-0 z-50 bg-transparent border-b border-transparent">
+                <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+                    <div class="flex items-center space-x-2">
+                        <span class="bg-[var(--primary-blue)] text-white w-8 h-8 flex items-center justify-center rounded-lg font-bold text-lg">C</span>
+                        <h1 class="text-xl font-bold text-[var(--text-dark)]">CampusSphere</h1>
+                    </div>
+                    <div class="hidden md:flex items-center space-x-8 text-sm font-medium text-gray-600">
+                        <a href="#home" data-section="home" class="nav-link-pre-login hover:text-[var(--primary-blue)] transition active-nav-pre-login">Home</a>
+                        <a href="#features" data-section="features" class="nav-link-pre-login hover:text-[var(--primary-blue)] transition">Features</a>
+                        <a href="#testimonials" data-section="testimonials" class="nav-link-pre-login hover:text-[var(--primary-blue)] transition">Reviews</a>
+                        <a href="#about" data-section="about" class="nav-link-pre-login hover:text-[var(--primary-blue)] transition">About</a>
+                        <a href="#contact" data-section="contact" class="nav-link-pre-login hover:text-[var(--primary-blue)] transition">Contact</a>
+                    </div>
+                    <button id="show-auth-modal-btn" class="hidden md:block bg-[var(--primary-blue)] text-white px-5 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 transition">Login / Sign Up</button>
+                    <button id="mobile-menu-btn" class="md:hidden text-[var(--text-dark)]"><i data-lucide="menu" class="w-6 h-6"></i></button>
+                </nav>
+            </header>
+            
+            <div id="mobile-menu" class="hidden fixed inset-0 bg-white/95 backdrop-blur-sm z-40 p-6 opacity-0">
+                <div class="flex justify-end mb-8">
+                    <button id="close-mobile-menu-btn"><i data-lucide="x" class="w-8 h-8"></i></button>
+                </div>
+                <div class="flex flex-col items-center justify-center space-y-8 text-xl font-medium text-gray-700">
+                    <a href="#home" class="mobile-nav-link">Home</a>
+                    <a href="#features" class="mobile-nav-link">Features</a>
+                    <a href="#testimonials" class="mobile-nav-link">Reviews</a>
+                    <a href="#about" class="mobile-nav-link">About</a>
+                    <a href="#contact" class="mobile-nav-link">Contact</a>
+                    <button id="mobile-auth-btn" class="mt-8 bg-[var(--primary-blue)] text-white px-6 py-3 rounded-lg font-bold">Login / Sign Up</button>
+                </div>
+            </div>
+
+            <main id="pre-login-main">
+                
+                <section id="home" class="min-h-screen grid grid-cols-1 md:grid-cols-2 items-center">
+                    <div class="bg-[var(--accent-yellow)] h-full flex flex-col justify-center p-8 md:p-16 text-left">
+                        <h1 class="text-4xl md:text-6xl font-extrabold text-[var(--text-dark)] leading-tight mb-4">Discover the CampusSphere</h1>
+                        <p class="text-gray-800 max-w-xl text-lg mb-8">A smart campus event and engagement platform that brings all student activities together in one place.</p>
+                        <div class="flex items-center space-x-4">
+                            <button id="get-started-btn" class="bg-[var(--primary-blue)] text-white px-6 py-3 rounded-lg font-bold hover:bg-blue-700 transition transform hover:scale-105">Get Started</button>
+                        </div>
+                    </div>
+                    <div class="h-full bg-[var(--background-light)] hidden md:flex items-center justify-center">
+                        <img src="images/pic3.png" alt="Happy student on a laptop" class="object-cover w-full h-full max-h-screen">
+                    </div>
+                </section>
+
+                <section id="features" class="py-24 px-6 bg-[var(--background-post-login)]">
+                    <div class="text-center mb-16">
+                        <h2 class="text-4xl font-bold text-[var(--text-dark)]">One Platform. Endless Opportunities.</h2>
+                        <p class="text-gray-600 mt-2">Features designed for every member of the campus community.</p>
+                    </div>
+                    <div class="container mx-auto grid md:grid-cols-3 gap-8">
+                        <div class="interactive-card feature-card p-8 rounded-2xl text-center">
+                            <div class="mx-auto w-16 h-16 bg-blue-100 text-[var(--primary-blue)] rounded-xl flex items-center justify-center mb-4"><i data-lucide="users" class="w-8 h-8"></i></div>
+                            <h3 class="text-xl font-bold text-[var(--text-dark)] mb-2">For Students</h3>
+                            <p class="text-gray-600">Eligibility-aware event discovery, smart registration, team finders, and an automated campus resume.</p>
+                        </div>
+                        <div class="interactive-card feature-card p-8 rounded-2xl text-center" style="transition-delay: 150ms;">
+                            <div class="mx-auto w-16 h-16 bg-yellow-100 text-[var(--accent-yellow)] rounded-xl flex items-center justify-center mb-4"><i data-lucide="edit-3" class="w-8 h-8"></i></div>
+                            <h3 class="text-xl font-bold text-[var(--text-dark)] mb-2">For Organizers</h3>
+                            <p class="text-gray-600">Effortless event creation with custom eligibility, participant tracking, and powerful communication tools.</p>
+                        </div>
+                        <div class="interactive-card feature-card p-8 rounded-2xl text-center" style="transition-delay: 300ms;">
+                            <div class="mx-auto w-16 h-16 bg-purple-100 text-purple-600 rounded-xl flex items-center justify-center mb-4"><i data-lucide="bar-chart-2" class="w-8 h-8"></i></div>
+                            <h3 class="text-xl font-bold text-[var(--text-dark)] mb-2">For Universities</h3>
+                            <p class="text-gray-600">Boost campus engagement, gain valuable analytics on participation, and foster a vibrant student culture.</p>
+                        </div>
+                    </div>
+                </section>
+                
+                <section id="testimonials" class="py-24 px-6 bg-white">
+                    <div class="text-center mb-16">
+                        <h2 class="text-4xl font-bold text-[var(--text-dark)]">Loved by Campuses Everywhere</h2>
+                        <p class="text-gray-600 mt-2">See what students and organizers are saying about CampusSphere.</p>
+                    </div>
+                    <div class="container mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                         <div class="interactive-card rounded-2xl p-6"><p class="text-gray-700">"Finding relevant events used to be a chore. CampusSphere shows me exactly what I'm eligible for. Saved me so much time!"</p><div class="flex items-center mt-4"><img src="https://placehold.co/40x40/FFB300/212121?text=P" alt="Priya S." class="rounded-full w-10 h-10 mr-4"><div class="text-sm"><p class="font-semibold text-[var(--text-dark)]">Priya S.</p><p class="text-gray-600">Student</p></div></div></div>
+                         <div class="interactive-card rounded-2xl p-6"><p class="text-gray-700">"Organizing our annual tech fest was seamless this year. Collecting registrations and sending updates was a breeze. Highly recommended!"</p><div class="flex items-center mt-4"><img src="https://placehold.co/40x40/1E88E5/FFFFFF?text=R" alt="Rohan M." class="rounded-full w-10 h-10 mr-4"><div class="text-sm"><p class="font-semibold text-[var(--text-dark)]">Rohan M.</p><p class="text-gray-600">Organizer, Tech Club</p></div></div></div>
+                         <div class="interactive-card rounded-2xl p-6"><p class="text-gray-700">"The 'Plan My Week' AI feature is a game-changer for balancing my studies and extra-curriculars. It's like having a personal assistant."</p><div class="flex items-center mt-4"><img src="https://placehold.co/40x40/D870F4/FFFFFF?text=A" alt="Anjali K." class="rounded-full w-10 h-10 mr-4"><div class="text-sm"><p class="font-semibold text-[var(--text-dark)]">Anjali K.</p><p class="text-gray-600">Student</p></div></div></div>
+                         <div class="interactive-card rounded-2xl p-6"><p class="text-gray-700">"CampusSphere transformed our club events. Registration used to be a headache, now it's smooth and simple. A must-have for any campus group!"</p><div class="flex items-center mt-4"><img src="https://placehold.co/40x40/4DD0E1/FFFFFF?text=S" alt="Sarah J." class="rounded-full w-10 h-10 mr-4"><div class="text-sm"><p class="font-semibold text-[var(--text-dark)]">Sarah J.</p><p class="text-gray-600">Event Coordinator</p></div></div></div>
+                         <div class="interactive-card rounded-2xl p-6"><p class="text-gray-700">"The AI recommendations are spot on! I've discovered so many workshops relevant to my major that I would have missed otherwise."</p><div class="flex items-center mt-4"><img src="https://placehold.co/40x40/FF7043/FFFFFF?text=D" alt="David L." class="rounded-full w-10 h-10 mr-4"><div class="text-sm"><p class="font-semibold text-[var(--text-dark)]">David L.</p><p class="text-gray-600">Student</p></div></div></div>
+                         <div class="interactive-card rounded-2xl p-6"><p class="text-gray-700">"Managing university-wide participation metrics was always manual. CampusSphere's admin panel gives us real-time insights that are invaluable for decision-making."</p><div class="flex items-center mt-4"><img src="https://placehold.co/40x40/8BC34A/FFFFFF?text=M" alt="Dr. Maya K." class="rounded-full w-10 h-10 mr-4"><div class="text-sm"><p class="font-semibold text-[var(--text-dark)]">Dr. Maya K.</p><p class="text-gray-600">University Admin</p></div></div></div>
+                    </div> 
+                </section>
+
+                <section id="about" class="py-24 px-6 bg-[var(--background-post-login)]">
+                    <div class="text-center max-w-3xl mx-auto">
+                        <h2 class="text-4xl font-bold text-[var(--text-dark)]">Our Mission</h2>
+                        <p class="text-gray-600 mt-4 text-lg">To simplify and enrich campus life by creating a single, intelligent platform that connects students with opportunities. We believe in empowering students and streamlining event management to build a more engaged and collaborative university community.</p>
+                    </div>
+                </section>
+                
+                <section id="contact" class="py-24 px-6 bg-white">
+                    <div class="container mx-auto max-w-3xl text-center">
+                        <h2 class="text-4xl font-bold text-[var(--text-dark)]">Get in Touch</h2>
+                        <p class="text-gray-600 mt-4 text-lg">Have questions or want to see a demo? We'd love to hear from you.</p>
+                        <a href="mailto:hello@campussphere.app" class="mt-8 inline-block bg-[var(--primary-blue)] text-white px-8 py-3 rounded-lg font-bold hover:bg-blue-700 transition transform hover:scale-105">Contact Us</a>
+                    </div>
+                </section>
+            </main>
+            
+            <footer class="bg-white border-t">
+                <div class="container mx-auto py-6 px-6 text-center text-gray-600 text-sm">
+                    &copy; 2025 CampusSphere. All Rights Reserved.
+                </div>
+            </footer>
+        </div>
+        <div id="auth-modal" class="hidden fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
+            <div class="bg-white rounded-2xl w-full max-w-md shadow-lg relative">
+                <button id="close-auth-modal-btn" class="absolute top-3 right-3 text-gray-400 hover:text-gray-700"><i data-lucide="x" class="w-6 h-6"></i></button>
+                <div class="flex border-b">
+                    <div id="login-tab-btn" class="auth-tab flex-1 text-center active">Login</div>
+                    <div id="signup-tab-btn" class="auth-tab flex-1 text-center">Sign Up</div>
+                </div>
+                <div class="p-8">
+                    <div id="login-view">
+                        <h2 class="text-2xl font-bold text-center mb-6">Welcome Back!</h2>
+                        <button id="sso-login-btn" class="w-full bg-[var(--primary-blue)] text-white py-3 rounded-lg font-semibold flex items-center justify-center space-x-2 hover:bg-blue-700 transition"><i data-lucide="mail" class="w-5 h-5"></i><span>Sign in with University Email</span></button>
+                    </div>
+                    <div id="signup-view" class="hidden">
+                        <h2 class="text-2xl font-bold text-center mb-6">Create Your Account</h2>
+                        <form class="space-y-4">
+                            <div><label for="email" class="text-sm font-medium text-gray-700">University Email</label><input type="email" id="email" class="mt-1 w-full p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"></div>
+                            <div><label for="password" class="text-sm font-medium text-gray-700">Password</label><input type="password" id="password" class="mt-1 w-full p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"></div>
+                            <div><label for="confirm-password" class="text-sm font-medium text-gray-700">Confirm Password</label><input type="password" id="confirm-password" class="mt-1 w-full p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"></div>
+                            <button type="submit" class="w-full bg-[var(--primary-blue)] text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition">Create Account</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="role-selection-modal" class="hidden fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
+            <div class="bg-white rounded-2xl w-full max-w-lg p-8 text-center text-[var(--text-dark)]">
+                <h2 class="text-2xl font-bold mb-2">Select Your Role</h2><p class="text-gray-600 mb-8">Choose your dashboard view to continue.</p>
+                <div class="space-y-4">
+                    <button data-role="student" class="role-btn w-full text-left p-4 bg-gray-100 rounded-lg hover:bg-gray-200 transition flex items-center space-x-4"><i data-lucide="graduation-cap" class="w-6 h-6 text-[var(--primary-blue)]"></i><span class="font-semibold">Login as Student</span></button>
+                    <button data-role="faculty" class="role-btn w-full text-left p-4 bg-gray-100 rounded-lg hover:bg-gray-200 transition flex items-center space-x-4"><i data-lucide="briefcase" class="w-6 h-6 text-green-600"></i><span class="font-semibold">Login as Faculty</span></button>
+                    <button data-role="admin" class="role-btn w-full text-left p-4 bg-gray-100 rounded-lg hover:bg-gray-200 transition flex items-center space-x-4"><i data-lucide="shield" class="w-6 h-6 text-purple-500"></i><span class="font-semibold">Login as Admin</span></button>
+                </div>
+            </div>
+        </div>
+        </div>
+
+    <script src="landing-page.js"></script></body>
+</html>

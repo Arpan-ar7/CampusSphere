@@ -1,0 +1,34 @@
+/* FILE: admin-dashboard.css */
+
+/* =================================================================== */
+/* GLOBAL STYLES & FONT IMPORTS */
+/* =================================================================== */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+:root {
+    --primary-blue: #1E88E5;
+    --accent-yellow: #FAEBD7;
+    --accent-green: #4CAF50;
+    --background-light: #F9FAFB;
+    --background-post-login: #FFFBEB;
+    --text-dark: #212121;
+    --text-muted: #616161;
+    --border-color: #E0E0E0;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--background-light);
+    color: var(--text-dark);
+}
+html, body {
+    overflow-x: hidden;
+}
+body {
+    overflow-y: auto;
+}
+
+/* =================================================================== */
+/* ADMIN DASHBOARD STYLES */
+/* Add custom styles for the admin dashboard here in the future. */
+/* =================================================================== */

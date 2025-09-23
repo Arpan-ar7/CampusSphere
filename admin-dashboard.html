@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - CampusSphere</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="admin-dashboard.css">
+</head>
+<body class="antialiased">
+
+    <div id="admin-view" class="role-view">
+        <div class="flex min-h-screen bg-gray-100">
+            <div class="flex-1 flex flex-col">
+                <header class="bg-white shadow-sm sticky top-0 z-30 border-b border-gray-200">
+                    <div class="px-6 h-16 flex justify-between items-center">
+                        <h1 class="text-xl font-semibold text-gray-800">Admin Dashboard</h1>
+                        <button id="admin-logout-btn" class="text-gray-500 hover:text-red-600"><i data-lucide="log-out" class="w-6 h-6"></i></button>
+                    </div>
+                </header>
+                
+                <main class="flex-1 p-6">
+                    <div class="text-center text-gray-500">
+                        <h2 class="text-2xl font-bold">Admin Panel</h2>
+                        <p>Content for the admin dashboard will be built here.</p>
+                    </div>
+                </main>
+            </div>
+        </div>
+    </div>
+    <script src="admin-dashboard.js"></script>
+</body>
+</html>

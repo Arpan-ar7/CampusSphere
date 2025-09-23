@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard - CampusSphere</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+   <link rel="stylesheet" href="student-dashboard.css">
+</head>
+<body class="antialiased">
+
+    <div id="student-view" class="role-view bg-gray-50">
+        
+        <header class="bg-white/95 backdrop-blur-sm shadow-sm sticky top-0 z-40 border-b border-gray-200">
+            <nav class="container mx-auto px-4 sm:px-6 py-2 flex justify-between items-center">
+                <div class="flex items-center space-x-2">
+                    <span class="bg-blue-600 text-white w-8 h-8 flex items-center justify-center rounded-lg font-bold text-lg">C</span>
+                    <h1 class="hidden sm:block text-lg font-bold text-gray-800">CampusSphere</h1>
+                </div>
+
+                <div id="student-desktop-nav" class="hidden md:flex items-center space-x-1 bg-gray-100 p-1 rounded-full">
+                    <button data-page="home" class="student-nav-link-desktop px-4 py-1.5 text-sm font-semibold rounded-full active">Home</button>
+                    <button data-page="discover" class="student-nav-link-desktop px-4 py-1.5 text-sm font-semibold rounded-full">Discover</button>
+                    <button data-page="collaborate" class="student-nav-link-desktop px-4 py-1.5 text-sm font-semibold rounded-full">Collaborate</button>
+                    <button data-page="organize" class="student-nav-link-desktop px-4 py-1.5 text-sm font-semibold rounded-full">Organize</button>
+                    <button data-page="resume" class="student-nav-link-desktop px-4 py-1.5 text-sm font-semibold rounded-full">Resume</button>
+                </div>
+
+                <div class="flex items-center space-x-4">
+                    <button id="logout-btn" class="text-gray-500 hover:text-blue-600 transition-colors"><i data-lucide="log-out" class="w-6 h-6"></i></button>
+                    <button id="profile-avatar-btn"><img src="https://i.pravatar.cc/120?u=jane" alt="User Avatar" class="w-9 h-9 rounded-full border-2 border-white shadow"></button>
+                </div>
+            </nav>
+        </header>
+        
+        <main class="container mx-auto p-4 sm:p-6 pb-24"> 
+            
+            <div class="student-page" id="student-home-page">
+                <div class="p-6 md:p-8 mb-8 rounded-2xl bg-blue-100 border border-blue-200 flex flex-col md:flex-row justify-between items-center text-center md:text-left">
+                    <div>
+                        <h1 class="text-2xl md:text-3xl font-bold text-gray-800">Welcome back, Alex!</h1>
+                        <p class="text-gray-600 mt-1">Your personal dashboard for campus life.</p>
+                    </div>
+                    <button class="bg-blue-600 text-white px-6 py-3 rounded-full font-semibold mt-4 md:mt-0 flex items-center space-x-2 hover:bg-blue-700 transition-transform hover:scale-105 shadow-md">
+                        <span>Explore Events</span><i data-lucide="arrow-right" class="w-5 h-5"></i>
+                    </button>
+                </div>
+                <div class="mb-8">
+                    <h2 class="text-xl font-semibold mb-4 text-gray-800">Upcoming Events</h2>
+                    <div class="bg-white p-4 rounded-2xl border border-gray-200 shadow-sm" id="upcoming-events-list">
+                         <div class="flex items-center justify-between py-3 px-2 border-b"><div class="flex items-center space-x-3"><i data-lucide="calendar" class="w-5 h-5 text-gray-400"></i><span class="font-medium text-gray-800">Annual Science Fair</span></div><span class="text-sm text-gray-500">April 15, 2025 at 10:00 AM</span></div>
+                         <div class="flex items-center justify-between py-3 px-2 border-b"><div class="flex items-center space-x-3"><i data-lucide="calendar" class="w-5 h-5 text-gray-400"></i><span class="font-medium text-gray-800">Startup Pitch Competition</span></div><span class="text-sm text-gray-500">May 2, 2025 at 2:00 PM</span></div>
+                         <div class="flex items-center justify-between py-3 px-2"><div class="flex items-center space-x-3"><i data-lucide="calendar" class="w-5 h-5 text-gray-400"></i><span class="font-medium text-gray-800">Career Development Workshop</span></div><span class="text-sm text-gray-500">May 20, 2025 at 11:00 AM</span></div>
+                    </div>
+                </div>
+                <div>
+                    <h2 class="text-xl font-semibold mb-4 text-gray-800">My Participation History</h2>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+                         <div class="bg-white rounded-2xl overflow-hidden border border-gray-200 shadow-sm flex flex-col"><img src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?q=80&w=800" class="h-28 object-cover"><div class="p-4"><h3 class="font-bold">Campus Hackathon 2024</h3><span class="text-xs font-semibold bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full inline-block my-1">Hackathon</span><p class="text-sm text-gray-500 mt-1">March 2024</p></div></div>
+                         <div class="bg-white rounded-2xl overflow-hidden border border-gray-200 shadow-sm flex flex-col"><img src="https://images.unsplash.com/photo-1523580494863-6f3031224c94?q=80&w=800" class="h-28 object-cover"><div class="p-4"><h3 class="font-bold">Inter-College Debate</h3><span class="text-xs font-semibold bg-green-100 text-green-700 px-2 py-1 rounded-full inline-block my-1">Competition</span><p class="text-sm text-gray-500 mt-1">February 2024</p></div></div>
+                         <div class="bg-white rounded-2xl overflow-hidden border border-gray-200 shadow-sm flex flex-col"><img src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?q=80&w=800" class="h-28 object-cover"><div class="p-4"><h3 class="font-bold">Tech Innovation Summit</h3><span class="text-xs font-semibold bg-blue-100 text-blue-800 px-2 py-1 rounded-full inline-block my-1">Conference</span><p class="text-sm text-gray-500 mt-1">November 2023</p></div></div>
+                         <div class="bg-white rounded-2xl overflow-hidden border border-gray-200 shadow-sm flex flex-col"><img src="https://images.unsplash.com/photo-1560439538-519639b5fa2a?q=80&w=800" class="h-28 object-cover"><div class="p-4"><h3 class="font-bold">Student Leadership</h3><span class="text-xs font-semibold bg-purple-100 text-purple-800 px-2 py-1 rounded-full inline-block my-1">Workshop</span><p class="text-sm text-gray-500 mt-1">October 2023</p></div></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="student-page hidden" id="student-discover-page">
+                <h1 class="text-2xl font-bold text-gray-800 mb-2">Discover University Events</h1>
+                <div class="relative mb-4"><input type="text" placeholder="Search for events, workshops, or activities..." class="w-full p-3 pl-10 rounded-full border border-gray-200 focus:ring-2 focus:ring-blue-500 outline-none"><i data-lucide="search" class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"></i></div>
+                <div class="flex items-center justify-between gap-4 mb-6">
+                    <div class="flex items-center space-x-2 overflow-x-auto hide-scrollbar">
+                        <button class="filter-btn active">All</button><button class="filter-btn">Technical</button><button class="filter-btn">Cultural</button><button class="filter-btn">Sports</button><button class="filter-btn">Academic</button><button class="filter-btn">Social</button><button class="filter-btn">Workshop</button>
+                    </div>
+                    <div class="hidden sm:flex items-center space-x-2 flex-shrink-0">
+                        <label for="eligible-toggle" class="text-sm font-medium text-gray-600">Show only eligible events for me</label>
+                        <div class="toggle-switch"><input type="checkbox" id="eligible-toggle" class="toggle-checkbox"><label for="eligible-toggle" class="toggle-label"></label></div>
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    </div>
+            </div>
+            
+            <div class="student-page hidden" id="student-collaborate-page">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
+                    <h1 class="text-2xl font-bold text-gray-800">Find Teammates</h1>
+                    <div class="relative w-full sm:w-auto"><input type="text" placeholder="Find teammates by skill..." class="w-full sm:w-64 p-3 pl-10 rounded-full border border-gray-200 focus:ring-2 focus:ring-blue-500 outline-none"><i data-lucide="search" class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"></i></div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                   </div>
+            </div>
+
+            <div class="student-page hidden" id="student-organize-page">
+                <div class="max-w-2xl mx-auto bg-white p-8 rounded-2xl border border-gray-200 shadow-sm">
+                    <div class="text-center mb-8">
+                        <h1 class="text-2xl font-bold text-gray-800">Propose a New Event</h1>
+                        <p class="text-gray-500 mt-2">Fill out the details below to submit your event idea for approval.</p>
+                    </div>
+                    <form class="space-y-6">
+                        <div><label class="form-label">Event Title</label><input type="text" class="form-input" placeholder="e.g., Annual Tech Fest 2025"></div>
+                        <div><label class="form-label">Event Description</label><textarea rows="4" class="form-input" placeholder="Describe your event, its purpose, and target audience."></textarea></div>
+                        <div><label class="form-label">Proposed Date</label><input type="date" class="form-input"></div>
+                        <div><label class="form-label">Add Co-organizers</label><input type="text" placeholder="Select co-organizers..." class="form-input"></div>
+                        <div><label class="form-label">Select a Faculty Mentor (Optional)</label><input type="text" placeholder="Select a faculty mentor..." class="form-input"></div>
+                        <button type="submit" class="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition shadow">Submit for Approval</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="student-page hidden" id="student-resume-page">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
+    <div class="flex items-center gap-4">
+        <h1 class="text-2xl font-bold text-gray-800">Verified Achievements</h1>
+        <div class="flex items-center space-x-2">
+            <input type="checkbox" id="select-all-achievements" class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+            <label for="select-all-achievements" class="text-sm font-medium text-gray-700">Select All</label>
+        </div>
+    </div>
+    <button id="download-resume-pdf-btn" class="bg-green-600 text-white px-5 py-2.5 rounded-full font-semibold flex items-center space-x-2 hover:bg-green-700 transition shadow-md">
+        <i data-lucide="download" class="w-5 h-5"></i><span>Download PDF</span>
+    </button>
+</div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    </div>
+            </div>
+
+            <div class="student-page hidden" id="student-profile-page">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <div class="lg:col-span-1">
+                        <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm text-center">
+                            <img src="https://i.pravatar.cc/120?u=jane" alt="User Avatar" class="w-24 h-24 rounded-full mx-auto mb-4">
+                            <button class="text-sm font-semibold text-blue-600 hover:underline">Upload New Picture</button>
+                            <h2 class="text-xl font-bold mt-4">Jane Doe</h2>
+                            <p class="text-gray-500">jane.doe@university.edu</p>
+                        </div>
+                    </div>
+                    <div class="lg:col-span-2">
+                        <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
+                            <h3 class="text-lg font-bold text-gray-800 mb-4">Personal Information</h3>
+                            <form class="space-y-6">
+                                <div><label class="form-label">Display Name</label><input type="text" class="form-input" value="Jane Doe"></div>
+                                <div><label class="form-label">Bio</label><textarea rows="4" class="form-input">Dedicated student at CampusSphere University, passionate about technology and community engagement. Always eager to collaborate on innovative projects and learn new skills.</textarea></div>
+                            </form>
+                        </div>
+                        <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm mt-8">
+                            <h3 class="text-lg font-bold text-gray-800 mb-4">My Skills</h3>
+                            <div class="flex flex-wrap gap-2 mb-4" id="skills-container">
+                                </div>
+                            <div class="relative">
+                                <input type="text" id="new-skill-input" placeholder="e.g., JavaScript, Marketing, Leadership" class="form-input">
+                                <button id="add-skill-btn" class="absolute top-1/2 right-2 -translate-y-1/2 bg-blue-600 text-white px-3 py-1 rounded-md font-semibold text-sm hover:bg-blue-700">Add Skill</button>
+                            </div>
+                             <div class="mt-4">
+                                 <p class="text-sm text-gray-500 mb-2">Suggestions:</p>
+                                 <div class="flex flex-wrap gap-2">
+                                     <span class="suggestion-tag">Web Development</span><span class="suggestion-tag">Data Analysis</span><span class="suggestion-tag">Project Management</span><span class="suggestion-tag">UI/UX Design</span><span class="suggestion-tag">Public Speaking</span>
+                                 </div>
+                             </div>
+                        </div>
+                         <div class="mt-6 flex justify-end">
+                             <button class="bg-blue-600 text-white px-6 py-3 rounded-full font-semibold hover:bg-blue-700 transition shadow-md">Save Changes</button>
+                         </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        
+        <div id="student-mobile-nav" class="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-sm z-40 border-t border-gray-200 md:hidden">
+            <div class="container mx-auto flex justify-around items-center h-16">
+                <button data-page="home" class="student-nav-link text-center active"><i data-lucide="home" class="w-6 h-6 mx-auto"></i><span class="text-xs font-medium">Home</span></button>
+                <button data-page="discover" class="student-nav-link text-center"><i data-lucide="search" class="w-6 h-6 mx-auto"></i><span class="text-xs font-medium">Discover</span></button>
+                <button data-page="collaborate" class="student-nav-link text-center"><i data-lucide="users" class="w-6 h-6 mx-auto"></i><span class="text-xs font-medium">Collaborate</span></button>
+                <button data-page="organize" class="student-nav-link text-center"><i data-lucide="plus-circle" class="w-6 h-6 mx-auto"></i><span class="text-xs font-medium">Organize</span></button>
+                <button data-page="resume" class="student-nav-link text-center"><i data-lucide="file-text" class="w-6 h-6 mx-auto"></i><span class="text-xs font-medium">Resume</span></button>
+            </div>
+        </div>
+        <div id="event-details-modal" class="hidden fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto shadow-lg relative">
+        <button id="close-event-modal-btn" class="absolute top-3 right-3 text-gray-400 hover:text-gray-700 bg-gray-100 rounded-full p-1">
+            <i data-lucide="x" class="w-6 h-6"></i>
+        </button>
+        
+        <div id="modal-content-container">
+            </div>
+    </div>
+</div>
+    </div>
+    <script src="student-dashboard.js"></script>
+</body>
+</html>
