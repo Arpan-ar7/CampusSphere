@@ -5,32 +5,149 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard - CampusSphere</title>
     
+    <!-- Tailwind CSS for styling -->
     <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Chart.js for Analytics Charts -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Lucide Icons Library -->
     <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- Your Custom Stylesheet -->
     <link rel="stylesheet" href="admin-dashboard.css">
 </head>
-<body class="antialiased">
+<body class="bg-gray-100">
 
-    <div id="admin-view" class="role-view">
-        <div class="flex min-h-screen bg-gray-100">
-            <div class="flex-1 flex flex-col">
-                <header class="bg-white shadow-sm sticky top-0 z-30 border-b border-gray-200">
-                    <div class="px-6 h-16 flex justify-between items-center">
-                        <h1 class="text-xl font-semibold text-gray-800">Admin Dashboard</h1>
-                        <button id="admin-logout-btn" class="text-gray-500 hover:text-red-600"><i data-lucide="log-out" class="w-6 h-6"></i></button>
-                    </div>
-                </header>
-                
-                <main class="flex-1 p-6">
-                    <div class="text-center text-gray-500">
-                        <h2 class="text-2xl font-bold">Admin Panel</h2>
-                        <p>Content for the admin dashboard will be built here.</p>
-                    </div>
-                </main>
+    <div class="flex min-h-screen">
+        <!-- Sidebar Navigation -->
+        <aside class="w-64 bg-white shadow-md fixed h-full flex flex-col">
+            <div class="p-4 border-b">
+                <h1 class="text-xl font-bold text-blue-600">CampusSphere</h1>
             </div>
+            <nav class="flex flex-col mt-4 flex-grow overflow-y-auto">
+                <button data-page="analytics" class="admin-nav-link flex items-center gap-3 px-4 py-3 text-left">
+                    <i data-lucide="bar-chart-2" class="w-5 h-5"></i> Analytics Dashboard
+                </button>
+                <button data-page="users" class="admin-nav-link flex items-center gap-3 px-4 py-3 text-left">
+                    <i data-lucide="users" class="w-5 h-5"></i> User Management
+                </button>
+                <button data-page="events" class="admin-nav-link flex items-center gap-3 px-4 py-3 text-left">
+                    <i data-lucide="shield" class="w-5 h-5"></i> Event Governance
+                </button>
+                <button data-page="announcements" class="admin-nav-link flex items-center gap-3 px-4 py-3 text-left">
+                    <i data-lucide="megaphone" class="w-5 h-5"></i> Campus Announcements
+                </button>
+                <button data-page="settings" class="admin-nav-link flex items-center gap-3 px-4 py-3 text-left">
+                    <i data-lucide="settings" class="w-5 h-5"></i> Platform Settings
+                </button>
+                <button data-page="profile" class="admin-nav-link flex items-center gap-3 px-4 py-3 text-left">
+                    <i data-lucide="user" class="w-5 h-5"></i> My Profile
+                </button>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <div class="ml-64 flex-1 flex flex-col">
+            <!-- Header -->
+            <header class="bg-white shadow-sm sticky top-0 z-10 flex justify-between items-center px-6 py-3 border-b">
+                <h1 id="admin-page-title" class="text-xl font-semibold text-gray-800">Analytics Dashboard</h1>
+                <div class="flex items-center gap-4">
+                    <i data-lucide="bell" class="w-6 h-6 text-gray-600 cursor-pointer"></i>
+                    <div class="w-9 h-9 bg-gray-300 rounded-full cursor-pointer"></div>
+                </div>
+            </header>
+
+            <!-- Content Pages Wrapper -->
+            <main class="p-6 overflow-y-auto">
+                <!-- Analytics Page -->
+                <div id="admin-analytics-page" class="admin-page space-y-6">
+                    <h2 class="text-2xl font-bold mb-4 text-gray-800">Campus-Wide Analytics</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                        <div class="bg-white p-4 rounded-xl shadow-sm"><h3 class="text-sm text-gray-500">Total Student Participation</h3><p class="text-3xl font-bold mt-2">12,453</p></div>
+                        <div class="bg-white p-4 rounded-xl shadow-sm"><h3 class="text-sm text-gray-500">Total Events Organized</h3><p class="text-3xl font-bold mt-2">274</p></div>
+                        <div class="bg-white p-4 rounded-xl shadow-sm"><h3 class="text-sm text-gray-500">Overall Engagement Rate (%)</h3><p class="text-3xl font-bold mt-2">88%</p></div>
+                        <div class="bg-white p-4 rounded-xl shadow-sm"><h3 class="text-sm text-gray-500">Most Active Department</h3><p class="text-3xl font-bold mt-2">CSE</p></div>
+                    </div>
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                        <div class="bg-white p-4 rounded-xl shadow-sm lg:col-span-2"><h3 class="text-lg font-semibold mb-4 text-gray-800">Participation Over Time (Monthly)</h3><div class="h-64"><canvas id="participation-chart"></canvas></div></div>
+                        <div class="bg-white p-4 rounded-xl shadow-sm"><h3 class="text-lg font-semibold mb-4 text-gray-800">Events by Category</h3><div class="h-64 flex justify-center"><canvas id="category-chart"></canvas></div></div>
+                    </div>
+                    <div class="bg-white p-4 rounded-xl shadow-sm"><h3 class="text-lg font-semibold mb-4 text-gray-800">Departmental Engagement</h3><div class="h-64"><canvas id="department-chart"></canvas></div></div>
+                </div>
+
+                <!-- User Management Page -->
+                <div id="admin-users-page" class="admin-page hidden space-y-4">
+                    <h2 class="text-2xl font-bold text-gray-800">User Management</h2>
+                    <div class="flex gap-4 border-b">
+                        <button id="faculty-tab-btn" class="pb-2 font-semibold">Faculty Verification</button>
+                        <button id="all-users-tab-btn" class="pb-2 font-semibold text-gray-500">All Users</button>
+                    </div>
+                    <div class="overflow-x-auto border rounded-lg bg-white"><table class="w-full text-sm text-left text-gray-500">
+                        <thead class="text-xs text-gray-700 uppercase bg-gray-50"><tr>
+                            <th scope="col" class="px-6 py-3">Name</th><th scope="col" class="px-6 py-3">Role</th><th scope="col" class="px-6 py-3">Department</th><th scope="col" class="px-6 py-3">Status</th><th scope="col" class="px-6 py-3">Actions</th>
+                        </tr></thead>
+                        <tbody id="users-table-body">
+                            <!-- JS will populate this table body -->
+                        </tbody>
+                    </table></div>
+                </div>
+
+                <!-- Event Governance Page -->
+                <div id="admin-events-page" class="admin-page hidden space-y-4">
+                    <h2 class="text-2xl font-bold text-gray-800">All Campus Events</h2>
+                     <div class="overflow-x-auto border rounded-lg bg-white"><table class="w-full text-sm text-left text-gray-500">
+                        <thead class="text-xs text-gray-700 uppercase bg-gray-50"><tr>
+                            <th scope="col" class="px-6 py-3">Event Name</th><th scope="col" class="px-6 py-3">Organizing Dept.</th><th scope="col" class="px-6 py-3">Category</th><th scope="col" class="px-6 py-3">Participants</th><th scope="col" class="px-6 py-3">Status</th><th scope="col" class="px-6 py-3">Feature on Homepage</th>
+                        </tr></thead>
+                        <tbody id="events-table-body">
+                            <!-- JS will populate this table body -->
+                        </tbody>
+                    </table></div>
+                </div>
+
+                <!-- Announcements Page -->
+                <div id="admin-announcements-page" class="admin-page hidden space-y-4">
+                    <h2 class="text-2xl font-bold text-gray-800">Send a Campus-Wide Announcement</h2>
+                    <div class="bg-white p-6 rounded-lg shadow-sm">
+                        <textarea class="w-full p-3 border rounded-lg" rows="5" placeholder="Write your announcement..."></textarea>
+                        <button class="mt-4 px-4 py-2 rounded-lg font-semibold transition bg-blue-600 hover:bg-blue-700 text-white">Send to All Users</button>
+                        <p class="text-sm text-gray-600 mt-2">This will send a notification and display a banner to every user on the platform.</p>
+                    </div>
+                </div>
+
+                <!-- Settings Page -->
+                <div id="admin-settings-page" class="admin-page hidden space-y-6">
+                    <h2 class="text-2xl font-bold text-gray-800">Platform Settings & Branding</h2>
+                    <div class="bg-white p-6 rounded-lg shadow-sm">
+                        <h3 class="font-semibold mb-2">University Branding</h3>
+                        <input placeholder="University Name" class="w-full p-3 border rounded-lg mb-2">
+                        <button class="px-4 py-2 rounded-lg font-semibold transition border border-gray-300 bg-white text-gray-700 hover:bg-gray-50">Upload Logo</button>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-sm">
+                        <h3 class="font-semibold mb-2">Verified Resume Seal</h3>
+                        <p class="text-sm text-gray-600 mb-2">This seal will appear on verified student resumes.</p>
+                        <button class="px-4 py-2 rounded-lg font-semibold transition border border-gray-300 bg-white text-gray-700 hover:bg-gray-50">Upload Seal</button>
+                    </div>
+                    <button class="px-4 py-2 rounded-lg font-semibold transition bg-blue-600 hover:bg-blue-700 text-white">Save Changes</button>
+                </div>
+
+                <!-- Profile Page -->
+                <div id="admin-profile-page" class="admin-page hidden space-y-6">
+                    <h2 class="text-2xl font-bold text-gray-800">My Profile</h2>
+                    <div class="bg-white p-6 rounded-lg shadow-sm">
+                        <div class="space-y-4">
+                            <input placeholder="Display Name" class="w-full p-3 border rounded-lg">
+                            <input placeholder="Change Password" type="password" class="w-full p-3 border rounded-lg">
+                            <input placeholder="Manage Notifications" class="w-full p-3 border rounded-lg">
+                            <button class="px-4 py-2 rounded-lg font-semibold transition bg-blue-600 hover:bg-blue-700 text-white">Save Changes</button>
+                        </div>
+                    </div>
+                </div>
+            </main>
         </div>
     </div>
+
     <script src="admin-dashboard.js"></script>
 </body>
 </html>

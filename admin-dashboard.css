@@ -1,34 +1,49 @@
 /* FILE: admin-dashboard.css */
-
-/* =================================================================== */
-/* GLOBAL STYLES & FONT IMPORTS */
-/* =================================================================== */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
-
-:root {
-    --primary-blue: #1E88E5;
-    --accent-yellow: #FAEBD7;
-    --accent-green: #4CAF50;
-    --background-light: #F9FAFB;
-    --background-post-login: #FFFBEB;
-    --text-dark: #212121;
-    --text-muted: #616161;
-    --border-color: #E0E0E0;
-}
 
 body {
     font-family: 'Inter', sans-serif;
-    background-color: var(--background-light);
-    color: var(--text-dark);
-}
-html, body {
-    overflow-x: hidden;
-}
-body {
-    overflow-y: auto;
 }
 
-/* =================================================================== */
-/* ADMIN DASHBOARD STYLES */
-/* Add custom styles for the admin dashboard here in the future. */
-/* =================================================================== */
+/* Custom styles for the sidebar scrollbar */
+aside nav {
+    scrollbar-width: thin;
+    scrollbar-color: #d1d5db #f9fafb;
+}
+
+aside nav::-webkit-scrollbar {
+    width: 6px;
+}
+
+aside nav::-webkit-scrollbar-track {
+    background: #f9fafb;
+}
+
+aside nav::-webkit-scrollbar-thumb {
+    background-color: #d1d5db;
+    border-radius: 10px;
+    border: 3px solid #f9fafb;
+}
+
+/* Style for the active sidebar link to make it blue */
+.admin-nav-link.active {
+    background-color: #3B82F6; /* bg-blue-600 */
+    color: white;
+}
+
+/* Default state for non-active links */
+.admin-nav-link {
+    color: #4B5563; /* text-gray-600 */
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.admin-nav-link:hover {
+    background-color: #F3F4F6; /* bg-gray-100 */
+}
+
+/* Style for the active tab in User Management */
+.user-tab-btn.active {
+    color: #2563EB; /* text-blue-600 */
+    border-bottom: 2px solid #2563EB;
+}
+
