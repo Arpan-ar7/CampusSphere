@@ -7,33 +7,50 @@ document.addEventListener('DOMContentLoaded', () => {
     lucide.createIcons();
 
     // ===================================================================
+    // CONFIGURATION - API Base URL
+    // ===================================================================
+    const API_BASE_URL = 'http://localhost:5000/api'; // Your Flask backend URL
+
+    // ===================================================================
     // STATE MANAGEMENT for Student Dashboard
     // ===================================================================
     const state = {
         currentStudentPage: 'home', // Default page is 'home'
-        // Add this new line inside your 'state' object
-selectedAchievements: new Set(),
+        selectedAchievements: new Set(),
+        currentUser: JSON.parse(sessionStorage.getItem('currentUser') || '{}'), // NEW: Get user from session
+        collaborateCurrentTab: 'all-posts', // NEW: Track collaborate tab
+        submittedEvents: [], // NEW: Track submitted events
+        collaborationPosts: [], // NEW: Track collaboration posts
+        interestedPosts: new Set(), // NEW: Track posts user is interested in
+        chatMessages: [], // NEW: Track chat messages
     };
 
     // ===================================================================
-    // DUMMY DATA for Student Dashboard
+    // ENHANCED DUMMY DATA for Student Dashboard
     // ===================================================================
     const dummyData = {
         user: {
-            name: 'Jane Doe',
-            email: 'jane.doe@university.edu',
-            bio: "Dedicated student at CampusSphere University, passionate about technology and community engagement. Always eager to collaborate on innovative projects and learn new skills.",
-            skills: ['React', 'Python', 'Teamwork', 'Communication', 'Data Entry'],
-            avatarUrl: 'https://i.pravatar.cc/120?u=jane'
+            id: state.currentUser.id || 1,
+            name: state.currentUser.fullName || 'Arpan Kumar Panda',
+            officialName: 'Arpan Kumar Panda',
+            email: state.currentUser.email || 'arpan.panda126649@marwadiuniversity.ac.in',
+            bio: "Student at CampusSphere University, passionate about technology and community engagement. Always eager to collaborate on innovative projects and learn new skills.",
+            department: 'Computer Science Engineering',
+            branch: 'CSE core',
+            semester: '3',
+            class: '3EV-5',
+            enrollmentNo: '92400120098',
+            skills: ['Python', 'Teamwork', 'Communication','Machine Learning',''],
+            avatarUrl: "images/studentprofile.png"
+            
         },
         
-        // --- UPDATED: Restored all 6 events with full details and eligibility ---
         events: [
             { 
                 id: 1, 
                 title: 'Annual Tech Innovate Challenge', 
                 category: 'Technical', 
-                isEligible: true, // New property for toggle switch
+                isEligible: true,
                 date: 'Nov 15, 2024',
                 time: '10:00 AM - 5:00 PM',
                 location: 'Engineering Building Auditorium', 
@@ -45,13 +62,15 @@ selectedAchievements: new Set(),
                     { time: '11:30 AM', task: 'Hackathon Begins' },
                 ],
                 facultyContact: { name: 'Dr. Eleanor Vance', email: 'e.vance@university.edu' },
-                imageUrl: 'https://images.unsplash.com/photo-1605379399642-870262d3d051?q=80&w=800' 
+                imageUrl: 'https://images.unsplash.com/photo-1605379399642-870262d3d051?q=80&w=800',
+                hasGoogleForm: false, // NEW: Track if event has Google Form
+                googleFormUrl: '' // NEW: Google Form URL if available
             },
-            { // Restored Event 2
+            { 
                 id: 2, 
                 title: 'Global Culture Fest', 
                 category: 'Cultural', 
-                isEligible: false, // Not eligible
+                isEligible: false,
                 date: 'Dec 01, 2024',
                 time: '12:00 PM - 6:00 PM',
                 location: 'Student Union Plaza', 
@@ -63,13 +82,15 @@ selectedAchievements: new Set(),
                     { time: '04:00 PM', task: 'Live Music Band' },
                 ],
                 facultyContact: { name: 'Dr. Aisha Khan', email: 'a.khan@university.edu' },
-                imageUrl: 'https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?q=80&w=800' 
+                imageUrl: 'https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?q=80&w=800',
+                hasGoogleForm: true, // NEW: Has Google Form
+                googleFormUrl: 'https://forms.google.com/culture-fest'
             },
-            { // Restored Event 3
+            { 
                 id: 3, 
                 title: 'Inter-Departmental Sports Day', 
                 category: 'Sports', 
-                isEligible: false, // Not eligible
+                isEligible: false,
                 date: 'Oct 28, 2024',
                 time: '9:00 AM - 4:00 PM',
                 location: 'Campus Sports Complex', 
@@ -81,13 +102,16 @@ selectedAchievements: new Set(),
                     { time: '01:00 PM', task: 'Team Sports Finals' },
                 ],
                 facultyContact: { name: 'Coach David Lee', email: 'd.lee@university.edu' },
-                imageUrl: 'https://images.unsplash.com/photo-1599494112020-f33955c4c11b?q=80&w=800' 
+                imageUrl: "images/sports.png",
+
+                hasGoogleForm: false,
+                googleFormUrl: ''
             },
-            { // Restored Event 4
+            { 
                 id: 4, 
                 title: 'Future Leaders Summit', 
                 category: 'Academic', 
-                isEligible: true, // Eligible
+                isEligible: true,
                 date: 'Nov 05, 2024',
                 time: '1:00 PM - 5:00 PM',
                 location: 'Business School Lecture Hall', 
@@ -99,13 +123,15 @@ selectedAchievements: new Set(),
                     { time: '03:00 PM', task: 'Breakout Session: Networking Skills' },
                 ],
                 facultyContact: { name: 'Prof. Sarah Chen', email: 's.chen@university.edu' },
-                imageUrl: 'https://images.unsplash.com/photo-1556761175-5973dc0f32e7?q=80&w=800' 
+                imageUrl: 'https://images.unsplash.com/photo-1556761175-5973dc0f32e7?q=80&w=800',
+                hasGoogleForm: true,
+                googleFormUrl: 'https://forms.google.com/leadership-summit'
             },
-            { // Restored Event 5
+            { 
                 id: 5, 
                 title: 'Intro to Web Development', 
                 category: 'Workshop', 
-                isEligible: true, // Eligible
+                isEligible: true,
                 date: 'Oct 10, 2024',
                 time: '6:00 PM - 8:00 PM',
                 location: 'Computer Lab 203', 
@@ -116,13 +142,15 @@ selectedAchievements: new Set(),
                     { time: '07:00 PM', task: 'Hands-on JavaScript exercises' },
                 ],
                 facultyContact: { name: 'Dr. Ben Carter', email: 'b.carter@university.edu' },
-                imageUrl: 'https://images.unsplash.com/photo-1542831371-29b0f74f9713?q=80&w=800' 
+                imageUrl: 'https://images.unsplash.com/photo-1542831371-29b0f74f9713?q=80&w=800',
+                hasGoogleForm: false,
+                googleFormUrl: ''
             },
-            { // Restored Event 6
+            { 
                 id: 6, 
                 title: 'Fall Semester Welcome Party', 
                 category: 'Social', 
-                isEligible: false, // Not eligible
+                isEligible: false,
                 date: 'Sep 20, 2024',
                 time: '5:00 PM onwards',
                 location: 'University Garden', 
@@ -133,26 +161,104 @@ selectedAchievements: new Set(),
                     { time: '06:00 PM', task: 'Food and Refreshments' },
                 ],
                 facultyContact: { name: 'Student Affairs Office', email: 'student.affairs@university.edu' },
-                imageUrl: 'https://images.unsplash.com/photo-1519167758481-83f550bb49b3?q=80&w=800' 
+                imageUrl: 'https://images.unsplash.com/photo-1519167758481-83f550bb49b3?q=80&w=800',
+                hasGoogleForm: false,
+                googleFormUrl: ''
             }
         ],
+
+        // NEW: Enhanced collaboration posts with team size tracking
         collaborationPosts: [
-            { id: 1, title: 'Teammate needed for SIH 2025', description: 'Looking for enthusiastic and skilled developers to join our team for Smart India Hackathon 2025. We are focusing on an AI-driven solution for sustainable urban farming.', skills: ['AI/ML', 'Python', 'IoT', 'Data Science'], imageUrl: 'https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=800' },
-            { id: 2, title: 'Web Dev for Campus Event Portal', description: 'Seeking frontend and backend developers for a new campus event management portal. Technologies include React, Node.js, and MongoDB. Help us build a seamless experience.', skills: ['React', 'Node.js', 'MongoDB', 'Full-stack'], imageUrl: 'https://images.unsplash.com/photo-1516321497487-e288fb19713f?q=80&w=800' },
-            { id: 3, title: 'Research Assistant for Robotics', description: 'Opportunity for a passionate student to assist in a cutting-edge robotics research project. Focus on robotic arm control and path planning. Experience with ROS, OpenCV is valued.', skills: ['Robotics', 'ROS', 'OpenCV', 'C++'], imageUrl: 'https://images.unsplash.com/photo-1614926857224-081541396895?q=80&w=800' },
-            { id: 4, title: 'Content Creator for Campus Blog', description: 'The Campus Chronicle is looking for creative writers and multimedia content creators to cover university events, student stories, and academic achievements.', skills: ['Content Writing', 'Journalism', 'Photography'], imageUrl: 'https://images.unsplash.com/photo-1499750310107-5fef28a66643?q=80&w=800' }
+            { 
+                id: 1, 
+                title: 'Teammate needed for SIH 2025', 
+                description: 'Looking for enthusiastic and skilled developers to join our team for Smart India Hackathon 2025. We are focusing on an AI-driven solution for sustainable urban farming.', 
+                skills: ['AI/ML', 'Python', 'IoT', 'Data Science'], 
+                author: 'Alex Johnson',
+                authorId: 2,
+                teamSizeNeeded: 3,
+                interestedCount: 7,
+                hasGoogleForm: true,
+                googleFormUrl: 'https://forms.google.com/sih-team',
+                postedDate: '2024-10-20',
+                imageUrl: 'https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=800' 
+            },
+            { 
+                id: 2, 
+                title: 'Web Dev for Campus Event Portal', 
+                description: 'Seeking frontend and backend developers for a new campus event management portal. Technologies include React, Node.js, and MongoDB. Help us build a seamless experience.', 
+                skills: ['React', 'Node.js', 'MongoDB', 'Full-stack'], 
+                author: 'Sarah Kim',
+                authorId: 3,
+                teamSizeNeeded: 2,
+                interestedCount: 4,
+                hasGoogleForm: false,
+                googleFormUrl: '',
+                postedDate: '2024-10-18',
+                imageUrl: 'https://images.unsplash.com/photo-1516321497487-e288fb19713f?q=80&w=800' 
+            },
+            { 
+                id: 3, 
+                title: 'Research Assistant for Robotics', 
+                description: 'Opportunity for a passionate student to assist in a cutting-edge robotics research project. Focus on robotic arm control and path planning. Experience with ROS, OpenCV is valued.', 
+                skills: ['Robotics', 'ROS', 'OpenCV', 'C++'], 
+                author: 'Mike Chen',
+                authorId: 4,
+                teamSizeNeeded: 1,
+                interestedCount: 12,
+                hasGoogleForm: false,
+                googleFormUrl: '',
+                postedDate: '2024-10-15',
+                imageUrl: 'images/robotics.png' 
+            },
+            { 
+                id: 4, 
+                title: 'Content Creator for Campus Blog', 
+                description: 'The Campus Chronicle is looking for creative writers and multimedia content creators to cover university events, student stories, and academic achievements.', 
+                skills: ['Content Writing', 'Journalism', 'Photography'], 
+                author: 'Emily Davis',
+                authorId: 5,
+                teamSizeNeeded: 4,
+                interestedCount: 8,
+                hasGoogleForm: true,
+                googleFormUrl: 'https://forms.google.com/campus-blog',
+                postedDate: '2024-10-12',
+                imageUrl: 'https://images.unsplash.com/photo-1499750310107-5fef28a66643?q=80&w=800' 
+            }
         ],
-        // Replace your old 'achievements' array with this one
-achievements: [
-    { id: 1, title: 'Annual Inter-University Hackathon', role: 'Winner - Best Innovative Solution', date: 'March 15-17, 2024' },
-    { id: 2, title: "CampusSphere Freshers' Fest", role: 'Volunteer Organizer', date: 'September 22, 2023' },
-    { id: 3, title: 'National AI Symposium', role: 'Participant', date: 'November 5-6, 2023' },
-    { id: 4, title: 'Student Leadership Summit', role: 'Panel Speaker', date: 'February 10, 2024' },
-    { id: 5, title: 'University Chess Championship', role: 'Runner-up', date: 'April 1, 2024' },
-    { id: 6, title: 'Data Science Workshop Series', role: 'Course Completion Certificate', date: 'Jan 15 - Feb 28, 2024' },
-    { id: 7, title: 'Campus Blood Donation Drive', role: 'Event Coordinator', date: 'October 10, 2023' },
-    { id: 8, title: 'Sustainable Living Challenge', role: 'Team Leader', date: 'July 1-31, 2023' }
-],
+
+        achievements: [
+            { id: 1, title: 'Annual Inter-University Hackathon', role: 'Winner - Best Innovative Solution', date: 'March 15-17, 2024' },
+            { id: 2, title: "CampusSphere Freshers' Fest", role: 'Volunteer Organizer', date: 'September 22, 2023' },
+            { id: 3, title: 'National AI Symposium', role: 'Participant', date: 'November 5-6, 2023' },
+            { id: 4, title: 'Student Leadership Summit', role: 'Panel Speaker', date: 'February 10, 2024' },
+            { id: 5, title: 'University Chess Championship', role: 'Runner-up', date: 'April 1, 2024' },
+            { id: 6, title: 'Data Science Workshop Series', role: 'Course Completion Certificate', date: 'Jan 15 - Feb 28, 2024' },
+            { id: 7, title: 'Campus Blood Donation Drive', role: 'Event Coordinator', date: 'October 10, 2023' },
+            { id: 8, title: 'Sustainable Living Challenge', role: 'Team Leader', date: 'July 1-31, 2023' }
+        ],
+
+        // NEW: Sample submitted events
+        submittedEvents: [
+            {
+                id: 1,
+                title: 'AI Workshop for Beginners',
+                status: 'pending',
+                submittedDate: '2024-10-15',
+                category: 'Workshop',
+                description: 'An introductory workshop on AI and machine learning concepts.',
+                mentor: 'Dr. Smith'
+            },
+            {
+                id: 2,
+                title: 'Cultural Dance Competition',
+                status: 'approved',
+                submittedDate: '2024-10-10',
+                category: 'Cultural',
+                description: 'Inter-departmental dance competition showcasing various cultural styles.',
+                mentor: 'Prof. Johnson'
+            }
+        ]
     };
 
     // ===================================================================
@@ -160,8 +266,10 @@ achievements: [
     // ===================================================================
     const DOMElements = {
         header: {
-            profileAvatarBtn: document.getElementById('profile-avatar-btn'),
-            logoutBtn: document.getElementById('logout-btn')
+            profileDropdownBtn: document.getElementById('profile-dropdown-btn'),
+            profileDropdownMenu: document.getElementById('profile-dropdown-menu'),
+            profileMenuBtn: document.getElementById('profile-menu-btn'),
+            logoutMenuBtn: document.getElementById('logout-menu-btn')
         },
         navLinks: document.querySelectorAll('.student-nav-link'),
         desktopNavLinks: document.querySelectorAll('.student-nav-link-desktop'),
@@ -172,24 +280,166 @@ achievements: [
         discover: {
             filterButtons: document.querySelectorAll('#student-discover-page .filter-btn'),
             eventGrid: document.querySelector('#student-discover-page .grid'),
-            eligibleToggle: document.getElementById('eligible-toggle'), // Added selector for the toggle switch
+            eligibleToggle: document.getElementById('eligible-toggle'),
         },
         collaborate: {
-            postGrid: document.querySelector('#student-collaborate-page .grid')
+            postGrid: document.querySelector('#student-collaborate-page .grid'),
+            addCollabBtn: document.getElementById('add-collaboration-btn'),
+            tabAllPosts: document.getElementById('tab-all-posts'),
+            tabMyPosts: document.getElementById('tab-my-posts'),
+            tabInterested: document.getElementById('tab-interested')
+        },
+        organize: {
+            form: document.getElementById('organize-event-form'),
+            submittedEventsGrid: document.getElementById('submitted-events-grid')
         },
         resume: {
-achievementsGrid: document.querySelector('#student-resume-page .grid'), // <-- Add comma here
-            // Add these two new lines inside the 'resume' object
-selectAllCheckbox: document.getElementById('select-all-achievements'),
-downloadPdfBtn: document.getElementById('download-resume-pdf-btn'),
+            achievementsGrid: document.querySelector('#student-resume-page .grid'),
+            selectAllCheckbox: document.getElementById('select-all-achievements'),
+            downloadPdfBtn: document.getElementById('download-resume-pdf-btn'),
         },
         profile: {
+            form: document.getElementById('profile-form'),
+            avatarImg: document.getElementById('profile-avatar-img'),
+            uploadAvatarBtn: document.getElementById('upload-avatar-btn'),
+            avatarUpload: document.getElementById('avatar-upload'),
+            displayName: document.getElementById('profile-display-name'),
+            email: document.getElementById('profile-email'),
             skillsContainer: document.getElementById('skills-container'),
             newSkillInput: document.getElementById('new-skill-input'),
             addSkillBtn: document.getElementById('add-skill-btn'),
-            suggestionTags: document.querySelectorAll('.suggestion-tag')
+            suggestionTags: document.querySelectorAll('.suggestion-tag'),
+            saveProfileBtn: document.getElementById('save-profile-btn')
         },
+        darkModeToggle: document.getElementById('dark-mode-toggle'),
+        
+        // NEW: Modal elements
+        modals: {
+            eventDetails: document.getElementById('event-details-modal'),
+            eventRegistration: document.getElementById('event-registration-modal'),
+            addCollaboration: document.getElementById('add-collaboration-modal'),
+            collaborationChat: document.getElementById('collaboration-chat-modal'),
+            notification: document.getElementById('notification')
+        }
     };
+
+    // ===================================================================
+    // UTILITY FUNCTIONS
+    // ===================================================================
+    
+    // NEW: Show notification function
+    function showNotification(title, message, type = 'success') {
+        const notification = DOMElements.modals.notification;
+        const titleEl = document.getElementById('notification-title');
+        const messageEl = document.getElementById('notification-message');
+        const iconEl = document.getElementById('notification-icon');
+        
+        titleEl.textContent = title;
+        messageEl.textContent = message;
+        
+        // Set icon based on type
+        if (type === 'success') {
+            iconEl.innerHTML = '<i data-lucide="check-circle" class="w-6 h-6 text-green-500"></i>';
+        } else if (type === 'error') {
+            iconEl.innerHTML = '<i data-lucide="x-circle" class="w-6 h-6 text-red-500"></i>';
+        } else if (type === 'warning') {
+            iconEl.innerHTML = '<i data-lucide="alert-triangle" class="w-6 h-6 text-yellow-500"></i>';
+        }
+        
+        notification.classList.remove('hidden');
+        lucide.createIcons();
+        
+        // Auto-hide after 5 seconds
+        setTimeout(() => {
+            hideNotification();
+        }, 5000);
+    }
+
+    function hideNotification() {
+        const notification = DOMElements.modals.notification;
+        notification.classList.add('hiding');
+        setTimeout(() => {
+            notification.classList.add('hidden');
+            notification.classList.remove('hiding');
+        }, 300);
+    }
+
+    // NEW: Profile data persistence functions
+    function saveProfileData() {
+        const profileData = {
+            officialName: document.getElementById('profile-official-name')?.value || dummyData.user.name,
+            bio: document.getElementById('profile-bio')?.value || dummyData.user.bio,
+            department: document.getElementById('profile-department')?.value || dummyData.user.department,
+            branch: document.getElementById('profile-branch')?.value || dummyData.user.branch,
+            semester: document.getElementById('profile-semester')?.value || dummyData.user.semester,
+            class: document.getElementById('profile-class')?.value || dummyData.user.class,
+            enrollmentNo: document.getElementById('profile-enrollment')?.value || dummyData.user.enrollmentNo,
+            skills: dummyData.user.skills,
+            avatarUrl: dummyData.user.avatarUrl
+        };
+        
+        // Save to localStorage for persistence
+        localStorage.setItem('studentProfile', JSON.stringify(profileData));
+        
+        // Update dummy data
+        Object.assign(dummyData.user, profileData);
+        
+        // Update display name in header
+        DOMElements.profile.displayName.textContent = profileData.officialName;
+        
+        showNotification('Profile Updated', 'Your profile changes have been saved successfully!');
+    }
+
+    function loadProfileData() {
+        const savedProfile = localStorage.getItem('studentProfile');
+        if (savedProfile) {
+            const profileData = JSON.parse(savedProfile);
+            Object.assign(dummyData.user, profileData);
+            
+            // Update form fields if they exist
+            const fields = [
+                'profile-official-name',
+                'profile-bio', 
+                'profile-department',
+                'profile-branch',
+                'profile-semester',
+                'profile-class',
+                'profile-enrollment'
+            ];
+            
+            fields.forEach(fieldId => {
+                const element = document.getElementById(fieldId);
+                if (element && profileData[fieldId.replace('profile-', '')]) {
+                    element.value = profileData[fieldId.replace('profile-', '')];
+                }
+            });
+        }
+    }
+
+    // ===================================================================
+    // DARK MODE FUNCTIONALITY
+    // ===================================================================
+    
+    const isDarkMode = localStorage.getItem('darkMode') === 'true';
+    if (isDarkMode) {
+        document.body.classList.add('dark-mode');
+        updateDarkModeIcon(true);
+    }
+
+    function toggleDarkMode() {
+        document.body.classList.toggle('dark-mode');
+        const isDark = document.body.classList.contains('dark-mode');
+        localStorage.setItem('darkMode', isDark);
+        updateDarkModeIcon(isDark);
+    }
+
+    function updateDarkModeIcon(isDark) {
+        const icon = DOMElements.darkModeToggle?.querySelector('[data-lucide]');
+        if (icon) {
+            icon.setAttribute('data-lucide', isDark ? 'sun' : 'moon');
+            lucide.createIcons();
+        }
+    }
 
     // ===================================================================
     // UI RENDERING & DYNAMIC CONTENT FUNCTIONS
@@ -205,10 +455,20 @@ downloadPdfBtn: document.getElementById('download-resume-pdf-btn'),
         });
 
         window.scrollTo({ top: 0, behavior: 'smooth' });
+        
+        // Load page-specific data
+        if (state.currentStudentPage === 'collaborate') {
+            renderCollaborationPosts();
+        } else if (state.currentStudentPage === 'organize') {
+            renderSubmittedEvents();
+        } else if (state.currentStudentPage === 'profile') {
+            loadProfileData();
+            renderSkills();
+        }
+        
         lucide.createIcons();
     }
 
-    // --- UPDATED: This function now handles the eligibility toggle ---
     function renderDiscoverEvents() {
         const grid = DOMElements.discover.eventGrid;
         if (!grid) return;
@@ -217,23 +477,18 @@ downloadPdfBtn: document.getElementById('download-resume-pdf-btn'),
         if (!activeFilter) return;
         const activeCategory = activeFilter.textContent;
         
-        // --- LOGIC FOR ELIGIBILITY TOGGLE ---
-        // 1. Check if the eligibility toggle is on
         const isEligibleOnly = DOMElements.discover.eligibleToggle.checked;
 
-        // 2. Start with all events, then filter if the toggle is on
         let eventsToDisplay = dummyData.events;
         if (isEligibleOnly) {
             eventsToDisplay = eventsToDisplay.filter(event => event.isEligible);
         }
         
-        // 3. Apply the category filter to the (potentially pre-filtered) list
         const filteredEvents = eventsToDisplay.filter(event => {
             return activeCategory === 'All' || event.category === activeCategory;
         });
         
-        // 4. Render the final list of events
-        grid.innerHTML = ''; // Clear previous results
+        grid.innerHTML = '';
         if (filteredEvents.length === 0) {
             grid.innerHTML = `<p class="text-gray-500 md:col-span-3 text-center">No events match your criteria.</p>`;
             return;
@@ -242,7 +497,6 @@ downloadPdfBtn: document.getElementById('download-resume-pdf-btn'),
         filteredEvents.forEach(event => {
             const card = document.createElement('div');
             card.className = 'bg-white rounded-2xl overflow-hidden border border-gray-200 shadow-sm flex flex-col transition-transform hover:scale-105 hover:shadow-lg';
-            // Use a shorter substring for the description on the card
             const shortDescription = event.description.length > 100 ? event.description.substring(0, 100) + '...' : event.description;
             card.innerHTML = `
                 <img src="${event.imageUrl}" class="h-40 object-cover" alt="${event.title}">
@@ -260,58 +514,154 @@ downloadPdfBtn: document.getElementById('download-resume-pdf-btn'),
         lucide.createIcons();
     }
 
+    // NEW: Enhanced collaboration rendering with tabs
     function renderCollaborationPosts() {
         const grid = DOMElements.collaborate.postGrid;
-        if(!grid) return;
+        if (!grid) return;
+
+        let postsToShow = [];
+        
+        if (state.collaborateCurrentTab === 'all-posts') {
+            postsToShow = dummyData.collaborationPosts;
+        } else if (state.collaborateCurrentTab === 'my-posts') {
+            postsToShow = dummyData.collaborationPosts.filter(post => post.authorId === dummyData.user.id);
+        } else if (state.collaborateCurrentTab === 'interested') {
+            postsToShow = dummyData.collaborationPosts.filter(post => state.interestedPosts.has(post.id));
+        }
+
         grid.innerHTML = '';
-        dummyData.collaborationPosts.forEach(post => {
+        
+        if (postsToShow.length === 0) {
+            grid.innerHTML = `<div class="col-span-full text-center py-12">
+                <i data-lucide="users" class="w-16 h-16 mx-auto text-gray-300 mb-4"></i>
+                <h3 class="text-lg font-semibold text-gray-800 mb-2">No collaboration posts found</h3>
+                <p class="text-gray-500">Be the first to post a collaboration request!</p>
+            </div>`;
+            lucide.createIcons();
+            return;
+        }
+
+        postsToShow.forEach(post => {
             const card = document.createElement('div');
-            card.className = 'bg-white p-5 rounded-2xl border border-gray-200 shadow-sm transition-shadow hover:shadow-lg';
+            card.className = 'collaboration-card bg-white p-5 rounded-2xl border border-gray-200 shadow-sm';
             const skillsHtml = post.skills.map(skill => `<span class="skill-tag">${skill}</span>`).join('');
+            
+            // Calculate progress percentage
+            const progressPercent = Math.min((post.interestedCount / post.teamSizeNeeded) * 100, 100);
+            
+            // Determine button text and action
+            let buttonHtml = '';
+            if (post.authorId === dummyData.user.id) {
+                buttonHtml = `
+                    <div class="flex gap-2">
+                        <button class="manage-post-btn flex-1 bg-green-600 text-white font-semibold py-2 rounded-lg hover:bg-green-700 transition" data-post-id="${post.id}">
+                            <i data-lucide="settings" class="w-4 h-4 inline mr-2"></i>Manage (${post.interestedCount})
+                        </button>
+                        <button class="chat-btn bg-blue-600 text-white px-3 py-2 rounded-lg hover:bg-blue-700 transition" data-post-id="${post.id}" title="Messages">
+                            <i data-lucide="message-circle" class="w-4 h-4"></i>
+                        </button>
+                    </div>`;
+            } else if (state.interestedPosts.has(post.id)) {
+                buttonHtml = `<button class="interested-btn w-full bg-yellow-100 text-yellow-800 font-semibold py-2 rounded-lg cursor-default">Applied</button>`;
+            } else {
+                buttonHtml = `<button class="interest-btn w-full bg-blue-600 text-white font-semibold py-2 rounded-lg hover:bg-blue-700 transition" data-post-id="${post.id}">I'm Interested</button>`;
+            }
+
             card.innerHTML = `
                 <img src="${post.imageUrl}" class="w-full h-32 object-cover rounded-lg mb-4">
-                <h3 class="font-bold text-lg">${post.title}</h3>
+                <div class="flex justify-between items-start mb-2">
+                    <h3 class="font-bold text-lg">${post.title}</h3>
+                    <span class="text-xs text-gray-500">${post.postedDate}</span>
+                </div>
+                <p class="text-sm text-gray-500 mb-1">by ${post.author}</p>
                 <p class="text-sm text-gray-600 mt-1 mb-3">${post.description}</p>
                 <div class="flex flex-wrap gap-2 mb-4">${skillsHtml}</div>
-                <button class="w-full bg-blue-600 text-white font-semibold py-2 rounded-lg hover:bg-blue-700 transition">I'm Interested</button>`;
+                <div class="mb-4">
+                    <div class="flex justify-between text-sm text-gray-600 mb-1">
+                        <span>Team Progress</span>
+                        <span>${post.interestedCount}/${post.teamSizeNeeded} interested</span>
+                    </div>
+                    <div class="team-progress">
+                        <div class="team-progress-bar" style="width: ${progressPercent}%"></div>
+                    </div>
+                </div>
+                ${buttonHtml}`;
             grid.appendChild(card);
         });
+        lucide.createIcons();
     }
 
-    // Replace your entire old 'renderAchievements' function with this
-function renderAchievements() {
-    const grid = DOMElements.resume.achievementsGrid;
-    if (!grid) return;
-    grid.innerHTML = ''; // Clear existing cards
-    dummyData.achievements.forEach(item => {
-        const card = document.createElement('div');
-        // Check if this item's ID is in our selection Set
-        const isSelected = state.selectedAchievements.has(item.id);
-        // Add the 'selected' class if it is
-        card.className = `achievement-card bg-white rounded-2xl shadow-sm ${isSelected ? 'selected' : ''}`;
+    // NEW: Render submitted events
+    function renderSubmittedEvents() {
+        const grid = DOMElements.organize.submittedEventsGrid;
+        if (!grid) return;
+
+        grid.innerHTML = '';
         
-        card.innerHTML = `
-            <input type="checkbox" data-achievement-id="${item.id}" class="achievement-checkbox rounded border-gray-300 text-blue-600 focus:ring-blue-500" ${isSelected ? 'checked' : ''}>
-            <h3 class="font-bold text-lg">${item.title}</h3>
-            <p class="flex items-center text-sm text-gray-600 mt-2">
-                <i data-lucide="user-check" class="w-4 h-4 mr-2 text-green-500"></i>${item.role}
-            </p>
-            <p class="flex items-center text-sm text-gray-500 mt-1">
-                <i data-lucide="calendar" class="w-4 h-4 mr-2 text-gray-400"></i>${item.date}
-            </p>`;
-        grid.appendChild(card);
-    });
-    lucide.createIcons();
-}
+        if (state.submittedEvents.length === 0) {
+            grid.innerHTML = `<div class="col-span-full text-center py-8">
+                <i data-lucide="calendar-x" class="w-12 h-12 mx-auto text-gray-300 mb-4"></i>
+                <p class="text-gray-500">No events submitted yet.</p>
+            </div>`;
+            lucide.createIcons();
+            return;
+        }
+
+        state.submittedEvents.forEach(event => {
+            const card = document.createElement('div');
+            card.className = 'bg-white p-6 rounded-2xl border border-gray-200 shadow-sm';
+            
+            let statusClass = 'status-pending';
+            if (event.status === 'approved') statusClass = 'status-approved';
+            if (event.status === 'rejected') statusClass = 'status-rejected';
+            
+            card.innerHTML = `
+                <div class="flex justify-between items-start mb-3">
+                    <h3 class="font-bold text-lg">${event.title}</h3>
+                    <span class="status-badge ${statusClass}">${event.status}</span>
+                </div>
+                <p class="text-sm text-gray-600 mb-2">${event.description}</p>
+                <div class="text-xs text-gray-500 space-y-1">
+                    <p><i data-lucide="user" class="w-3 h-3 inline mr-1"></i>Mentor: ${event.mentor}</p>
+                    <p><i data-lucide="calendar" class="w-3 h-3 inline mr-1"></i>Submitted: ${event.submittedDate}</p>
+                    <p><i data-lucide="tag" class="w-3 h-3 inline mr-1"></i>Category: ${event.category}</p>
+                </div>`;
+            grid.appendChild(card);
+        });
+        lucide.createIcons();
+    }
+
+    function renderAchievements() {
+        const grid = DOMElements.resume.achievementsGrid;
+        if (!grid) return;
+        grid.innerHTML = '';
+        dummyData.achievements.forEach(item => {
+            const card = document.createElement('div');
+            const isSelected = state.selectedAchievements.has(item.id);
+            card.className = `achievement-card bg-white rounded-2xl shadow-sm ${isSelected ? 'selected' : ''}`;
+            
+            card.innerHTML = `
+                <input type="checkbox" data-achievement-id="${item.id}" class="achievement-checkbox rounded border-gray-300 text-blue-600 focus:ring-blue-500" ${isSelected ? 'checked' : ''}>
+                <h3 class="font-bold text-lg">${item.title}</h3>
+                <p class="flex items-center text-sm text-gray-600 mt-2">
+                    <i data-lucide="user-check" class="w-4 h-4 mr-2 text-green-500"></i>${item.role}
+                </p>
+                <p class="flex items-center text-sm text-gray-500 mt-1">
+                    <i data-lucide="calendar" class="w-4 h-4 mr-2 text-gray-400"></i>${item.date}
+                </p>`;
+            grid.appendChild(card);
+        });
+        lucide.createIcons();
+    }
     
     function renderSkills() {
         const container = DOMElements.profile.skillsContainer;
-        if(!container) return;
+        if (!container) return;
         container.innerHTML = '';
         dummyData.user.skills.forEach(skill => {
             const tag = document.createElement('span');
             tag.className = 'skill-tag-editable';
-            tag.innerHTML = `${skill}<button data-skill="${skill}" class="remove-skill-btn">&times;</button>`;
+            tag.innerHTML = `${skill}<button data-skill="${skill}" class="remove-skill-btn" type="button">&times;</button>`;
             container.appendChild(tag);
         });
         
@@ -371,6 +721,16 @@ function renderAchievements() {
             `;
         }
 
+        // NEW: Add register button in modal
+        const registerButtonHtml = `
+            <div class="mt-6 p-4 bg-gray-50 rounded-lg">
+                <button id="register-event-btn" data-event-id="${event.id}" class="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition flex items-center justify-center space-x-2">
+                    <i data-lucide="calendar-plus" class="w-5 h-5"></i>
+                    <span>Register for this Event</span>
+                </button>
+            </div>
+        `;
+
         modalContent.innerHTML = `
             <img src="${event.imageUrl}" class="w-full h-64 object-cover rounded-t-2xl" alt="${event.title}">
             <div class="p-6 md:p-8">
@@ -391,8 +751,8 @@ function renderAchievements() {
                 <p class="text-gray-700 leading-relaxed mt-4">${event.description}</p>
                 
                 ${scheduleHtml}
-
                 ${contactHtml}
+                ${registerButtonHtml}
             </div>
         `;
         
@@ -400,10 +760,155 @@ function renderAchievements() {
         lucide.createIcons();
     }
 
+    // NEW: Handle event registration
+    function handleEventRegistration(eventId) {
+        const event = dummyData.events.find(e => e.id === eventId);
+        if (!event) return;
+
+        const modal = DOMElements.modals.eventRegistration;
+        const titleEl = document.getElementById('registration-event-title');
+        
+        titleEl.textContent = event.title;
+        modal.classList.remove('hidden');
+    }
+
+    function confirmEventRegistration() {
+        const modal = DOMElements.modals.eventRegistration;
+        const titleEl = document.getElementById('registration-event-title');
+        const eventTitle = titleEl.textContent;
+        
+        // Find the event to check if it has Google Form
+        const event = dummyData.events.find(e => e.title === eventTitle);
+        
+        modal.classList.add('hidden');
+        
+        if (event && event.hasGoogleForm && event.googleFormUrl) {
+            // Redirect to Google Form
+            showNotification(
+                'Registration Complete!',
+                'Redirecting you to the registration form...',
+                'success'
+            );
+            setTimeout(() => {
+                window.open(event.googleFormUrl, '_blank');
+            }, 1500);
+        } else {
+            // Auto-register using profile data
+            showNotification(
+                'Successfully Registered!',
+                'You have been registered using your profile information. Check your email for confirmation.',
+                'success'
+            );
+        }
+        
+        // Close event details modal
+        DOMElements.modals.eventDetails.classList.add('hidden');
+    }
+
+    // NEW: Handle collaboration interest
+    function handleCollaborationInterest(postId) {
+        const post = dummyData.collaborationPosts.find(p => p.id === postId);
+        if (!post) return;
+
+        if (post.hasGoogleForm && post.googleFormUrl) {
+            // Redirect to Google Form
+            showNotification(
+                'Redirecting...',
+                'Taking you to the collaboration form...',
+                'success'
+            );
+            setTimeout(() => {
+                window.open(post.googleFormUrl, '_blank');
+            }, 1500);
+        } else {
+            // Use profile data and add to interested
+            state.interestedPosts.add(postId);
+            post.interestedCount += 1;
+            
+            showNotification(
+                'Interest Registered!',
+                'Your profile has been shared with the project author. They will contact you if selected.',
+                'success'
+            );
+        }
+        
+        renderCollaborationPosts();
+    }
+
+    // NEW: Handle collaboration form submission
+    function handleCollaborationSubmission(formData) {
+        const newPost = {
+            id: Date.now(), // Simple ID generation
+            title: formData.title,
+            description: formData.description,
+            skills: formData.skills.split(',').map(s => s.trim()),
+            author: dummyData.user.name,
+            authorId: dummyData.user.id,
+            teamSizeNeeded: parseInt(formData.teamSize),
+            interestedCount: 0,
+            hasGoogleForm: !!formData.googleFormUrl,
+            googleFormUrl: formData.googleFormUrl || '',
+            postedDate: new Date().toISOString().split('T')[0],
+            imageUrl: 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=800' // Default image
+        };
+        
+        dummyData.collaborationPosts.unshift(newPost); // Add to beginning
+        
+        showNotification(
+            'Post Created!',
+            'Your collaboration request has been posted successfully.',
+            'success'
+        );
+        
+        // Switch to "My Posts" tab to show the new post
+        state.collaborateCurrentTab = 'my-posts';
+        updateCollaborateTabs();
+        renderCollaborationPosts();
+    }
+
+    // NEW: Update collaborate tabs
+    function updateCollaborateTabs() {
+        const tabs = [
+            { id: 'tab-all-posts', key: 'all-posts' },
+            { id: 'tab-my-posts', key: 'my-posts' },
+            { id: 'tab-interested', key: 'interested' }
+        ];
+        
+        tabs.forEach(tab => {
+            const element = document.getElementById(tab.id);
+            if (element) {
+                element.classList.toggle('active', state.collaborateCurrentTab === tab.key);
+            }
+        });
+    }
+
+    // NEW: Handle avatar upload
+    function handleAvatarUpload(file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const newAvatarUrl = e.target.result;
+            dummyData.user.avatarUrl = newAvatarUrl;
+            
+            // Update all avatar displays
+            DOMElements.profile.avatarImg.src = newAvatarUrl;
+            const headerAvatar = document.querySelector('#profile-dropdown-btn img');
+            if (headerAvatar) {
+                headerAvatar.src = newAvatarUrl;
+            }
+            
+            showNotification('Avatar Updated', 'Your profile picture has been updated!');
+        };
+        reader.readAsDataURL(file);
+    }
+
     // ===================================================================
     // EVENT LISTENERS for Student Dashboard
     // ===================================================================
 
+    // Dark mode toggle
+    DOMElements.darkModeToggle?.addEventListener('click', toggleDarkMode);
+
+    // Navigation
     DOMElements.desktopNavLinks.forEach(link => link.addEventListener('click', () => {
         state.currentStudentPage = link.dataset.page;
         renderStudentPage();
@@ -414,12 +919,27 @@ function renderAchievements() {
         renderStudentPage();
     }));
     
-    DOMElements.header.profileAvatarBtn?.addEventListener('click', () => {
-        state.currentStudentPage = 'profile';
-        renderStudentPage();
+    // NEW: Profile dropdown functionality
+    DOMElements.header.profileDropdownBtn?.addEventListener('click', (e) => {
+        e.stopPropagation();
+        DOMElements.header.profileDropdownMenu.classList.toggle('hidden');
     });
 
-    DOMElements.header.logoutBtn?.addEventListener('click', () => {
+    // Close dropdown when clicking outside
+    document.addEventListener('click', () => {
+        DOMElements.header.profileDropdownMenu?.classList.add('hidden');
+    });
+
+    DOMElements.header.profileMenuBtn?.addEventListener('click', () => {
+        state.currentStudentPage = 'profile';
+        renderStudentPage();
+        DOMElements.header.profileDropdownMenu.classList.add('hidden');
+    });
+
+    DOMElements.header.logoutMenuBtn?.addEventListener('click', () => {
+        // Clear session data and redirect
+        sessionStorage.removeItem('currentUser');
+        localStorage.removeItem('studentProfile');
         window.location.href = 'landing-page.html';
     });
     
@@ -428,6 +948,7 @@ function renderAchievements() {
         renderStudentPage();
     });
 
+    // Discover page event listeners
     const discoverGrid = DOMElements.discover.eventGrid;
     if (discoverGrid) {
         discoverGrid.addEventListener('click', (e) => {
@@ -442,12 +963,27 @@ function renderAchievements() {
         });
     }
 
-    const closeEventModalBtn = document.getElementById('close-event-modal-btn');
-    if (closeEventModalBtn) {
-        closeEventModalBtn.addEventListener('click', () => {
-            document.getElementById('event-details-modal').classList.add('hidden');
-        });
-    }
+    // NEW: Event registration handlers
+    document.addEventListener('click', (e) => {
+        if (e.target.id === 'register-event-btn' || e.target.closest('#register-event-btn')) {
+            const button = e.target.closest('#register-event-btn');
+            const eventId = parseInt(button.dataset.eventId);
+            handleEventRegistration(eventId);
+        }
+    });
+
+    document.getElementById('confirm-registration-btn')?.addEventListener('click', confirmEventRegistration);
+    
+    document.getElementById('cancel-registration-btn')?.addEventListener('click', () => {
+        DOMElements.modals.eventRegistration.classList.add('hidden');
+    });
+
+    // Modal close handlers
+    document.getElementById('close-event-modal-btn')?.addEventListener('click', () => {
+        DOMElements.modals.eventDetails.classList.add('hidden');
+    });
+
+    document.getElementById('close-notification-btn')?.addEventListener('click', hideNotification);
     
     DOMElements.discover.filterButtons.forEach(button => {
         button.addEventListener('click', () => {
@@ -456,100 +992,173 @@ function renderAchievements() {
             renderDiscoverEvents();
         });
     });
-    // PASTE THIS ENTIRE BLOCK AT THE END OF THE 'EVENT LISTENERS' SECTION
 
-// --- Resume Page Event Listeners ---
+    DOMElements.discover.eligibleToggle?.addEventListener('change', renderDiscoverEvents);
 
-// Handles clicks on the checkboxes within the achievement cards.
-DOMElements.resume.achievementsGrid?.addEventListener('click', (e) => {
-    if (e.target.classList.contains('achievement-checkbox')) {
-        const checkbox = e.target;
-        const achievementId = parseInt(checkbox.dataset.achievementId);
-        const card = checkbox.closest('.achievement-card');
+    // NEW: Collaborate page event listeners
+    DOMElements.collaborate.addCollabBtn?.addEventListener('click', () => {
+        DOMElements.modals.addCollaboration.classList.remove('hidden');
+    });
 
-        if (checkbox.checked) {
-            state.selectedAchievements.add(achievementId);
-            card.classList.add('selected');
+    // Collaborate tabs
+    DOMElements.collaborate.tabAllPosts?.addEventListener('click', () => {
+        state.collaborateCurrentTab = 'all-posts';
+        updateCollaborateTabs();
+        renderCollaborationPosts();
+    });
+
+    DOMElements.collaborate.tabMyPosts?.addEventListener('click', () => {
+        state.collaborateCurrentTab = 'my-posts';
+        updateCollaborateTabs();
+        renderCollaborationPosts();
+    });
+
+    DOMElements.collaborate.tabInterested?.addEventListener('click', () => {
+        state.collaborateCurrentTab = 'interested';
+        updateCollaborateTabs();
+        renderCollaborationPosts();
+    });
+
+    // Collaborate grid event delegation
+    DOMElements.collaborate.postGrid?.addEventListener('click', (e) => {
+        if (e.target.classList.contains('interest-btn') || e.target.closest('.interest-btn')) {
+            const button = e.target.closest('.interest-btn');
+            const postId = parseInt(button.dataset.postId);
+            handleCollaborationInterest(postId);
+        }
+        
+    });
+
+    // NEW: Collaboration modal handlers
+    document.getElementById('close-collaboration-modal-btn')?.addEventListener('click', () => {
+        DOMElements.modals.addCollaboration.classList.add('hidden');
+    });
+
+    document.getElementById('cancel-collaboration-btn')?.addEventListener('click', () => {
+        DOMElements.modals.addCollaboration.classList.add('hidden');
+    });
+
+    document.getElementById('collaboration-form')?.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const formData = {
+            title: document.getElementById('collab-title').value,
+            description: document.getElementById('collab-description').value,
+            skills: document.getElementById('collab-skills').value,
+            teamSize: document.getElementById('collab-team-size').value,
+            googleFormUrl: document.getElementById('collab-form-link').value
+        };
+        
+        handleCollaborationSubmission(formData);
+        e.target.reset();
+        DOMElements.modals.addCollaboration.classList.add('hidden');
+    });
+
+    // NEW: Organize form handler
+    DOMElements.organize.form?.addEventListener('submit', (e) => {
+        e.preventDefault();
+        
+        const newEvent = {
+            id: Date.now(),
+            title: document.getElementById('event-title').value,
+            description: document.getElementById('event-description').value,
+            category: document.getElementById('event-category').value,
+            status: 'pending',
+            submittedDate: new Date().toISOString().split('T')[0],
+            mentor: document.getElementById('event-mentor').value
+        };
+        
+        state.submittedEvents.unshift(newEvent);
+        
+        showNotification(
+            'Event Submitted!',
+            'Your event proposal has been submitted for faculty approval.',
+            'success'
+        );
+        
+        e.target.reset();
+        renderSubmittedEvents();
+    });
+
+    // Resume page event listeners
+    DOMElements.resume.achievementsGrid?.addEventListener('click', (e) => {
+        if (e.target.classList.contains('achievement-checkbox')) {
+            const checkbox = e.target;
+            const achievementId = parseInt(checkbox.dataset.achievementId);
+            const card = checkbox.closest('.achievement-card');
+
+            if (checkbox.checked) {
+                state.selectedAchievements.add(achievementId);
+                card.classList.add('selected');
+            } else {
+                state.selectedAchievements.delete(achievementId);
+                card.classList.remove('selected');
+            }
+            DOMElements.resume.selectAllCheckbox.checked = state.selectedAchievements.size === dummyData.achievements.length;
+        }
+    });
+
+    DOMElements.resume.selectAllCheckbox?.addEventListener('change', (e) => {
+        const isChecked = e.target.checked;
+        if (isChecked) {
+            dummyData.achievements.forEach(item => state.selectedAchievements.add(item.id));
         } else {
-            state.selectedAchievements.delete(achievementId);
-            card.classList.remove('selected');
+            state.selectedAchievements.clear();
         }
-        // Update the 'Select All' checkbox state
-        DOMElements.resume.selectAllCheckbox.checked = state.selectedAchievements.size === dummyData.achievements.length;
-    }
-});
-
-// Handles the 'Select All' checkbox.
-DOMElements.resume.selectAllCheckbox?.addEventListener('change', (e) => {
-    const isChecked = e.target.checked;
-    if (isChecked) {
-        // Add all achievement IDs to the selection set
-        dummyData.achievements.forEach(item => state.selectedAchievements.add(item.id));
-    } else {
-        // Clear the selection set
-        state.selectedAchievements.clear();
-    }
-    // Re-render all cards to reflect the change
-    renderAchievements();
-});
-
-// Handles the 'Download PDF' button click.
-DOMElements.resume.downloadPdfBtn?.addEventListener('click', () => {
-    if (typeof window.jspdf === 'undefined') {
-        alert('PDF generation library is not loaded. Please check the script tag in your HTML file.');
-        return;
-    }
-    if (state.selectedAchievements.size === 0) {
-        alert('Please select at least one achievement to include in the PDF.');
-        return;
-    }
-
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF();
-    
-    // Filter the main data to get only the selected achievements
-    const selectedItems = dummyData.achievements.filter(item => state.selectedAchievements.has(item.id));
-
-    // Create the PDF content
-    doc.setFontSize(22);
-    doc.text('Verified Achievements', 20, 20);
-    doc.setFontSize(16);
-    doc.text(dummyData.user.name, 20, 30);
-    
-    let yPosition = 45; // Starting position for the list
-    selectedItems.forEach(item => {
-        if (yPosition > 280) { // Add a new page if content overflows
-            doc.addPage();
-            yPosition = 20;
-        }
-        doc.setFontSize(12);
-        doc.setFont(undefined, 'bold');
-        doc.text(`- ${item.title}`, 20, yPosition);
-        
-        doc.setFontSize(10);
-        doc.setFont(undefined, 'normal');
-        doc.text(`  Role: ${item.role}`, 22, yPosition + 5);
-        doc.text(`  Date: ${item.date}`, 22, yPosition + 10);
-        
-        yPosition += 20; // Move down for the next item
+        renderAchievements();
     });
 
-    // Save the PDF
-    doc.save('CampusSphere_Achievements.pdf');
-});
+    DOMElements.resume.downloadPdfBtn?.addEventListener('click', () => {
+        if (typeof window.jspdf === 'undefined') {
+            showNotification('Error', 'PDF generation library is not loaded.', 'error');
+            return;
+        }
+        if (state.selectedAchievements.size === 0) {
+            showNotification('No Selection', 'Please select at least one achievement to include in the PDF.', 'warning');
+            return;
+        }
 
-    // --- NEW: Event listener for the eligibility toggle switch ---
-    DOMElements.discover.eligibleToggle.addEventListener('change', () => {
-        renderDiscoverEvents(); // Re-render when toggle state changes
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+        
+        const selectedItems = dummyData.achievements.filter(item => state.selectedAchievements.has(item.id));
+
+        doc.setFontSize(22);
+        doc.text('Verified Achievements', 20, 20);
+        doc.setFontSize(16);
+        doc.text(dummyData.user.name, 20, 30);
+        
+        let yPosition = 45;
+        selectedItems.forEach(item => {
+            if (yPosition > 280) {
+                doc.addPage();
+                yPosition = 20;
+            }
+            doc.setFontSize(12);
+            doc.setFont(undefined, 'bold');
+            doc.text(`- ${item.title}`, 20, yPosition);
+            
+            doc.setFontSize(10);
+            doc.setFont(undefined, 'normal');
+            doc.text(`  Role: ${item.role}`, 22, yPosition + 5);
+            doc.text(`  Date: ${item.date}`, 22, yPosition + 10);
+            
+            yPosition += 20;
+        });
+
+        doc.save('CampusSphere_Achievements.pdf');
+        showNotification('PDF Downloaded', 'Your achievements have been saved to PDF successfully!');
     });
 
+    // Profile page event listeners
     DOMElements.profile.addSkillBtn?.addEventListener('click', addSkill);
+    
     DOMElements.profile.newSkillInput?.addEventListener('keypress', (e) => {
         if (e.key === 'Enter') {
             e.preventDefault();
             addSkill();
         }
     });
+    
     DOMElements.profile.suggestionTags.forEach(tag => {
         tag.addEventListener('click', () => {
             const skill = tag.textContent;
@@ -560,12 +1169,32 @@ DOMElements.resume.downloadPdfBtn?.addEventListener('click', () => {
         });
     });
 
+    // NEW: Avatar upload handler
+    DOMElements.profile.uploadAvatarBtn?.addEventListener('click', () => {
+        DOMElements.profile.avatarUpload.click();
+    });
+
+    DOMElements.profile.avatarUpload?.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            handleAvatarUpload(file);
+        }
+    });
+
+    // NEW: Save profile handler
+    DOMElements.profile.saveProfileBtn?.addEventListener('click', saveProfileData);
+
     // ===================================================================
     // INITIAL PAGE LOAD SETUP
     // ===================================================================
+    loadProfileData();
     renderDiscoverEvents(); 
     renderCollaborationPosts();
     renderAchievements();
     renderSkills();
     renderStudentPage();
+    updateCollaborateTabs();
+
+    // Load submitted events from dummy data for demo
+    state.submittedEvents = dummyData.submittedEvents;
 });

@@ -1,11 +1,98 @@
 /* FILE: admin-dashboard.css */
+
+/* =================================================================== */
+/* GLOBAL STYLES & FONT IMPORTS */
+/* =================================================================== */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
 
+/* Base font styling */
 body {
     font-family: 'Inter', sans-serif;
 }
 
-/* Custom styles for the sidebar scrollbar */
+/* =================================================================== */
+/* FORM ELEMENTS & UTILITIES */
+/* =================================================================== */
+
+/* Form labels */
+.form-label {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 0.5rem;
+}
+
+/* Form inputs */
+.form-input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid #E5E7EB;
+    border-radius: 0.5rem;
+    background-color: #F9FAFB;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    font-size: 1rem;
+    color: #1F2937;
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: #2563EB;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+/* Toggle Switch */
+.toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 28px;
+}
+
+.toggle-checkbox {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.toggle-label {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+    border-radius: 28px;
+}
+
+.toggle-label:before {
+    position: absolute;
+    content: "";
+    height: 22px;
+    width: 22px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.toggle-checkbox:checked + .toggle-label {
+    background-color: #2563EB;
+}
+
+.toggle-checkbox:checked + .toggle-label:before {
+    transform: translateX(22px);
+}
+
+/* =================================================================== */
+/* SIDEBAR NAVIGATION STYLES */
+/* =================================================================== */
+
+/* Custom scrollbar styling for sidebar navigation */
 aside nav {
     scrollbar-width: thin;
     scrollbar-color: #d1d5db #f9fafb;
@@ -25,25 +112,569 @@ aside nav::-webkit-scrollbar-thumb {
     border: 3px solid #f9fafb;
 }
 
-/* Style for the active sidebar link to make it blue */
-.admin-nav-link.active {
-    background-color: #3B82F6; /* bg-blue-600 */
-    color: white;
-}
-
-/* Default state for non-active links */
+/* Navigation link styles */
 .admin-nav-link {
-    color: #4B5563; /* text-gray-600 */
+    color: #4B5563; /* Default gray color */
     transition: background-color 0.2s, color 0.2s;
 }
 
 .admin-nav-link:hover {
-    background-color: #F3F4F6; /* bg-gray-100 */
+    background-color: #F3F4F6; /* Light gray on hover */
 }
 
-/* Style for the active tab in User Management */
+/* Active navigation link styling */
+.admin-nav-link.active {
+    background-color: #3B82F6; /* Blue background for active link */
+    color: white;
+}
+
+/* =================================================================== */
+/* PROFILE DROPDOWN STYLES */
+/* =================================================================== */
+
+#admin-profile-dropdown-menu {
+    animation: dropdownFadeIn 0.2s ease-out;
+}
+
+@keyframes dropdownFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* =================================================================== */
+/* USER MANAGEMENT TAB STYLES */
+/* =================================================================== */
+
+/* Style for active tab in User Management */
+.user-tab-btn {
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s ease-in-out;
+}
+
 .user-tab-btn.active {
-    color: #2563EB; /* text-blue-600 */
-    border-bottom: 2px solid #2563EB;
+    color: #2563EB; /* Blue text for active tab */
+    border-bottom-color: #2563EB;
 }
 
+/* =================================================================== */
+/* STATISTICS & ANALYTICS ENHANCEMENTS */
+/* =================================================================== */
+
+/* Growth indicator badges */
+.growth-indicator {
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.25rem 0.5rem;
+    border-radius: 9999px;
+}
+
+.growth-positive {
+    background-color: #D1FAE5;
+    color: #065F46;
+}
+
+.growth-neutral {
+    background-color: #FEF3C7;
+    color: #92400E;
+}
+
+.growth-negative {
+    background-color: #FEE2E2;
+    color: #991B1B;
+}
+
+/* Department ranking styles */
+.department-rank-item {
+    display: flex;
+    align-items: center;
+    justify-content: between;
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+    transition: background-color 0.2s;
+}
+
+.department-rank-item:hover {
+    background-color: #F9FAFB;
+}
+
+.rank-number {
+    font-weight: 700;
+    font-size: 1.125rem;
+    color: #6B7280;
+    min-width: 2rem;
+}
+
+.rank-department {
+    font-weight: 600;
+    color: #1F2937;
+    flex: 1;
+}
+
+.rank-score {
+    font-weight: 600;
+    color: #2563EB;
+}
+
+/* =================================================================== */
+/* NOTIFICATION STYLES */
+/* =================================================================== */
+
+/* Notification badge animation */
+#admin-notification-badge {
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}
+
+/* Notification slide animation */
+#admin-notification {
+    animation: slideInFromRight 0.3s ease-out;
+}
+
+#admin-notification.hiding {
+    animation: slideOutToRight 0.3s ease-in;
+}
+
+@keyframes slideInFromRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideOutToRight {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+}
+
+/* =================================================================== */
+/* ANNOUNCEMENT STYLES */
+/* =================================================================== */
+
+.announcement-item {
+    border: 1px solid #E5E7EB;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    transition: border-color 0.2s;
+}
+
+.announcement-item:hover {
+    border-color: #D1D5DB;
+}
+
+.announcement-priority-normal {
+    border-left: 4px solid #6B7280;
+}
+
+.announcement-priority-important {
+    border-left: 4px solid #F59E0B;
+}
+
+.announcement-priority-urgent {
+    border-left: 4px solid #EF4444;
+}
+
+/* =================================================================== */
+/* STATUS BADGES */
+/* =================================================================== */
+
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.025em;
+}
+
+.status-pending {
+    background-color: #FEF3C7;
+    color: #92400E;
+}
+
+.status-approved,
+.status-verified {
+    background-color: #D1FAE5;
+    color: #065F46;
+}
+
+.status-denied,
+.status-rejected {
+    background-color: #FEE2E2;
+    color: #991B1B;
+}
+
+.status-active {
+    background-color: #DBEAFE;
+    color: #1E40AF;
+}
+
+/* =================================================================== */
+/* TABLE ENHANCEMENTS */
+/* =================================================================== */
+
+.table-row-hover:hover {
+    background-color: #F9FAFB;
+    cursor: pointer;
+}
+
+.table-action-btn {
+    padding: 0.375rem 0.75rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    border-radius: 0.375rem;
+    transition: all 0.2s;
+    border: none;
+    cursor: pointer;
+}
+
+.table-action-approve {
+    background-color: #10B981;
+    color: white;
+}
+
+.table-action-approve:hover {
+    background-color: #059669;
+}
+
+.table-action-deny {
+    background-color: #EF4444;
+    color: white;
+}
+
+.table-action-deny:hover {
+    background-color: #DC2626;
+}
+
+.table-action-remove {
+    background-color: #F59E0B;
+    color: white;
+}
+
+.table-action-remove:hover {
+    background-color: #D97706;
+}
+
+/* =================================================================== */
+/* DARK MODE STYLES */
+/* =================================================================== */
+
+/* Main body dark mode styling */
+body.dark-mode {
+    background-color: #111827 !important;
+    color: #F3F4F6 !important;
+}
+
+/* Sidebar dark mode */
+body.dark-mode aside {
+    background-color: #1F2937 !important;
+    border-color: #374151 !important;
+}
+
+/* Header dark mode */
+body.dark-mode header {
+    background-color: #1F2937 !important;
+    border-color: #374151 !important;
+}
+
+/* Main content area dark mode */
+body.dark-mode main {
+    background-color: #111827 !important;
+}
+
+/* Navigation links in dark mode */
+body.dark-mode .admin-nav-link {
+    color: #D1D5DB !important;
+}
+
+body.dark-mode .admin-nav-link:hover {
+    background-color: #374151 !important;
+    color: #F3F4F6 !important;
+}
+
+body.dark-mode .admin-nav-link.active {
+    background-color: #2563EB !important;
+    color: white !important;
+}
+
+/* White backgrounds become dark */
+body.dark-mode .bg-white {
+    background-color: #1F2937 !important;
+    color: #F3F4F6 !important;
+}
+
+/* Gray backgrounds in dark mode */
+body.dark-mode .bg-gray-100 {
+    background-color: #111827 !important;
+}
+
+body.dark-mode .bg-gray-50 {
+    background-color: #374151 !important;
+    color: #F3F4F6 !important;
+}
+
+body.dark-mode .bg-gray-300 {
+    background-color: #4B5563 !important;
+}
+
+/* Text colors in dark mode */
+body.dark-mode .text-gray-800,
+body.dark-mode .text-gray-700,
+body.dark-mode .text-gray-600 {
+    color: #F3F4F6 !important;
+}
+
+body.dark-mode .text-gray-500 {
+    color: #D1D5DB !important;
+}
+
+body.dark-mode .text-gray-400 {
+    color: #9CA3AF !important;
+}
+
+body.dark-mode .text-gray-900 {
+    color: #F3F4F6 !important;
+}
+
+/* Borders in dark mode */
+body.dark-mode .border,
+body.dark-mode .border-b,
+body.dark-mode .border-gray-300 {
+    border-color: #374151 !important;
+}
+
+/* Form elements in dark mode */
+body.dark-mode .form-input,
+body.dark-mode input,
+body.dark-mode textarea,
+body.dark-mode select {
+    background-color: #374151 !important;
+    border-color: #4B5563 !important;
+    color: #F3F4F6 !important;
+}
+
+body.dark-mode .form-input:focus,
+body.dark-mode input:focus,
+body.dark-mode textarea:focus,
+body.dark-mode select:focus {
+    border-color: #60A5FA !important;
+    box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.15) !important;
+}
+
+/* Input placeholders in dark mode */
+body.dark-mode input::placeholder,
+body.dark-mode textarea::placeholder {
+    color: #9CA3AF !important;
+}
+
+/* Form labels in dark mode */
+body.dark-mode .form-label {
+    color: #D1D5DB !important;
+}
+
+/* Table styling in dark mode */
+body.dark-mode table {
+    color: #F3F4F6 !important;
+}
+
+body.dark-mode th {
+    color: #D1D5DB !important;
+}
+
+body.dark-mode td {
+    color: #F3F4F6 !important;
+}
+
+body.dark-mode tr:hover,
+body.dark-mode .table-row-hover:hover {
+    background-color: #374151 !important;
+}
+
+body.dark-mode .hover\:bg-gray-50:hover {
+    background-color: #374151 !important;
+}
+
+/* Status badges in dark mode */
+body.dark-mode .status-pending {
+    background-color: #451A03 !important;
+    color: #FEF3C7 !important;
+}
+
+body.dark-mode .status-approved,
+body.dark-mode .status-verified {
+    background-color: #064E3B !important;
+    color: #D1FAE5 !important;
+}
+
+body.dark-mode .status-denied,
+body.dark-mode .status-rejected {
+    background-color: #7F1D1D !important;
+    color: #FEE2E2 !important;
+}
+
+body.dark-mode .status-active {
+    background-color: #1E3A8A !important;
+    color: #BFDBFE !important;
+}
+
+/* Growth indicators in dark mode */
+body.dark-mode .growth-positive {
+    background-color: #064E3B !important;
+    color: #D1FAE5 !important;
+}
+
+body.dark-mode .growth-neutral {
+    background-color: #451A03 !important;
+    color: #FEF3C7 !important;
+}
+
+body.dark-mode .growth-negative {
+    background-color: #7F1D1D !important;
+    color: #FEE2E2 !important;
+}
+
+/* Department ranking in dark mode */
+body.dark-mode .department-rank-item:hover {
+    background-color: #374151 !important;
+}
+
+body.dark-mode .rank-number {
+    color: #9CA3AF !important;
+}
+
+body.dark-mode .rank-department {
+    color: #F3F4F6 !important;
+}
+
+body.dark-mode .rank-score {
+    color: #60A5FA !important;
+}
+
+/* Announcement items in dark mode */
+body.dark-mode .announcement-item {
+    border-color: #4B5563 !important;
+}
+
+body.dark-mode .announcement-item:hover {
+    border-color: #6B7280 !important;
+}
+
+body.dark-mode .announcement-priority-normal {
+    border-left-color: #9CA3AF !important;
+}
+
+body.dark-mode .announcement-priority-important {
+    border-left-color: #F59E0B !important;
+}
+
+body.dark-mode .announcement-priority-urgent {
+    border-left-color: #EF4444 !important;
+}
+
+/* Button colors in dark mode */
+body.dark-mode .bg-green-500,
+body.dark-mode .table-action-approve {
+    background-color: #16A34A !important;
+}
+
+body.dark-mode .hover\:bg-green-600:hover,
+body.dark-mode .table-action-approve:hover {
+    background-color: #15803D !important;
+}
+
+body.dark-mode .bg-red-500,
+body.dark-mode .table-action-deny {
+    background-color: #DC2626 !important;
+}
+
+body.dark-mode .hover\:bg-red-600:hover,
+body.dark-mode .table-action-deny:hover {
+    background-color: #B91C1C !important;
+}
+
+body.dark-mode .bg-blue-600 {
+    background-color: #2563EB !important;
+}
+
+body.dark-mode .hover\:bg-blue-700:hover {
+    background-color: #1D4ED8 !important;
+}
+
+body.dark-mode .table-action-remove {
+    background-color: #D97706 !important;
+}
+
+body.dark-mode .table-action-remove:hover {
+    background-color: #B45309 !important;
+}
+
+/* Profile dropdown in dark mode */
+body.dark-mode #admin-profile-dropdown-menu {
+    background-color: #1F2937 !important;
+    border-color: #374151 !important;
+}
+
+/* Dark mode toggle button */
+body.dark-mode #dark-mode-toggle {
+    background-color: #374151 !important;
+}
+
+body.dark-mode #dark-mode-toggle:hover {
+    background-color: #4B5563 !important;
+}
+
+body.dark-mode #dark-mode-toggle i {
+    color: #F3F4F6 !important;
+}
+
+/* Shadow adjustments for dark mode */
+body.dark-mode .shadow-sm,
+body.dark-mode .shadow,
+body.dark-mode .shadow-md {
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Tab styling in dark mode */
+body.dark-mode .user-tab-btn.active {
+    color: #60A5FA !important;
+    border-bottom-color: #60A5FA !important;
+}
+
+/* Scrollbar in dark mode */
+body.dark-mode aside nav {
+    scrollbar-color: #4B5563 #1F2937;
+}
+
+body.dark-mode aside nav::-webkit-scrollbar-track {
+    background: #1F2937;
+}
+
+body.dark-mode aside nav::-webkit-scrollbar-thumb {
+    background-color: #4B5563;
+    border-color: #1F2937;
+}

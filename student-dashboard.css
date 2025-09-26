@@ -219,7 +219,6 @@ body {
     border-color: #2563EB; /* Specific new blue for dashboard */
     box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
 }
-/* PASTE THIS CODE AT THE END OF THE FILE */
 
 /* --- Resume Page: Achievement Card Selection --- */
 .achievement-card {
@@ -241,4 +240,395 @@ body {
     left: 1rem;  /* 16px */
     height: 1.25rem; /* 20px */
     width: 1.25rem; /* 20px */
+}
+
+/* NEW: Profile Dropdown Styles */
+#profile-dropdown-menu {
+    animation: dropdownFadeIn 0.2s ease-out;
+}
+
+@keyframes dropdownFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* NEW: Collaborate Page Tab Styles */
+.collaborate-tab-btn {
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s ease-in-out;
+}
+
+.collaborate-tab-btn.active {
+    color: #2563EB !important;
+    border-bottom-color: #2563EB;
+}
+
+/* NEW: Event Status Badges */
+.status-badge {
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.025em;
+}
+
+.status-pending {
+    background-color: #FEF3C7;
+    color: #92400E;
+}
+
+.status-approved {
+    background-color: #D1FAE5;
+    color: #065F46;
+}
+
+.status-rejected {
+    background-color: #FEE2E2;
+    color: #991B1B;
+}
+
+/* NEW: Chat Message Styles */
+.chat-message {
+    margin-bottom: 1rem;
+}
+
+.chat-message.sent {
+    text-align: right;
+}
+
+.chat-message.received {
+    text-align: left;
+}
+
+.chat-message .message-bubble {
+    display: inline-block;
+    max-width: 70%;
+    padding: 0.75rem 1rem;
+    border-radius: 1.5rem;
+    word-wrap: break-word;
+}
+
+.chat-message.sent .message-bubble {
+    background-color: #2563EB;
+    color: white;
+    border-bottom-right-radius: 0.5rem;
+}
+
+.chat-message.received .message-bubble {
+    background-color: #F3F4F6;
+    color: #374151;
+    border-bottom-left-radius: 0.5rem;
+}
+
+.chat-message .message-time {
+    font-size: 0.75rem;
+    color: #9CA3AF;
+    margin-top: 0.25rem;
+}
+
+/* NEW: Notification Animation */
+#notification {
+    animation: slideInFromRight 0.3s ease-out;
+}
+
+#notification.hiding {
+    animation: slideOutToRight 0.3s ease-in;
+}
+
+@keyframes slideInFromRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideOutToRight {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+}
+
+/* NEW: Interest Counter Badge */
+.interest-counter {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background-color: #DC2626;
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.25rem 0.5rem;
+    border-radius: 9999px;
+    min-width: 1.5rem;
+    text-align: center;
+    line-height: 1;
+}
+
+/* NEW: Collaboration Card Enhanced Styles */
+.collaboration-card {
+    position: relative;
+    transition: all 0.2s ease-in-out;
+}
+
+.collaboration-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.collaboration-card .team-progress {
+    background-color: #F3F4F6;
+    border-radius: 9999px;
+    height: 8px;
+    overflow: hidden;
+    margin: 0.75rem 0;
+}
+
+.collaboration-card .team-progress-bar {
+    background-color: #10B981;
+    height: 100%;
+    transition: width 0.3s ease-in-out;
+}
+
+/* ================================ */
+/* DARK MODE STYLES */
+/* ================================ */
+body.dark-mode {
+    background-color: #111827 !important; /* Deep gray background */
+    color: #F3F4F6 !important; /* Light text */
+}
+
+/* Header */
+body.dark-mode header {
+    background-color: #1F2937 !important;
+    border-color: #374151 !important;
+}
+
+/* Navigation Links */
+body.dark-mode .student-nav-link-desktop,
+body.dark-mode .student-nav-link {
+    color: #D1D5DB !important;
+}
+
+body.dark-mode .student-nav-link-desktop.active {
+    background-color: #374151 !important;
+    color: #93C5FD !important;
+}
+
+body.dark-mode .student-nav-link.active {
+    color: #60A5FA !important;
+}
+
+/* White background elements */
+body.dark-mode .bg-white {
+    background-color: #1F2937 !important;
+    color: #F3F4F6 !important;
+}
+
+/* Gray backgrounds */
+body.dark-mode .bg-gray-50,
+body.dark-mode .bg-gray-100 {
+    background-color: #374151 !important;
+    color: #F3F4F6 !important;
+}
+
+/* Blue light backgrounds */
+body.dark-mode .bg-blue-50,
+body.dark-mode .bg-blue-100 {
+    background-color: #1E3A8A !important;
+    color: #BFDBFE !important;
+}
+
+/* Yellow backgrounds */
+body.dark-mode .bg-yellow-100 {
+    background-color: #92400E !important;
+    color: #FEF3C7 !important;
+}
+
+body.dark-mode .text-yellow-800 {
+    color: #FEF3C7 !important;
+}
+
+/* Green backgrounds */
+body.dark-mode .bg-green-100 {
+    background-color: #14532D !important;
+    color: #BBF7D0 !important;
+}
+
+body.dark-mode .text-green-700 {
+    color: #BBF7D0 !important;
+}
+
+/* Purple backgrounds */
+body.dark-mode .bg-purple-100 {
+    background-color: #581C87 !important;
+    color: #E9D5FF !important;
+}
+
+body.dark-mode .text-purple-800 {
+    color: #E9D5FF !important;
+}
+
+/* Text colors */
+body.dark-mode .text-gray-800,
+body.dark-mode .text-gray-700,
+body.dark-mode .text-gray-600 {
+    color: #F3F4F6 !important;
+}
+
+body.dark-mode .text-gray-500 {
+    color: #D1D5DB !important;
+}
+
+body.dark-mode .text-gray-400 {
+    color: #9CA3AF !important;
+}
+
+/* Borders */
+body.dark-mode .border-gray-200,
+body.dark-mode .border-gray-300 {
+    border-color: #374151 !important;
+}
+
+/* Shadows */
+body.dark-mode .shadow-sm {
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Filter buttons */
+body.dark-mode .filter-btn {
+    background-color: #374151 !important;
+    color: #E5E7EB !important;
+}
+body.dark-mode .filter-btn.active {
+    background-color: #2563EB !important;
+    color: #fff !important;
+}
+
+/* Skill tags */
+body.dark-mode .skill-tag,
+body.dark-mode .skill-tag-editable {
+    background-color: #1E3A8A !important;
+    color: #BFDBFE !important;
+}
+
+body.dark-mode .skill-tag-editable button {
+    background: #1E40AF !important;
+    color: #BFDBFE !important;
+}
+
+body.dark-mode .skill-tag-editable button:hover {
+    background: #2563EB !important;
+}
+
+/* Suggestion tags */
+body.dark-mode .suggestion-tag {
+    background-color: #374151 !important;
+    color: #D1D5DB !important;
+    border-color: #4B5563 !important;
+}
+
+body.dark-mode .suggestion-tag:hover {
+    background-color: #4B5563 !important;
+    border-color: #6B7280 !important;
+}
+
+/* Form elements */
+body.dark-mode .form-input {
+    background-color: #1F2937 !important;
+    border-color: #374151 !important;
+    color: #F9FAFB !important;
+}
+
+body.dark-mode .form-input:focus {
+    border-color: #60A5FA !important;
+    box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.15) !important;
+}
+
+body.dark-mode .form-label {
+    color: #D1D5DB !important;
+}
+
+/* Achievement cards */
+body.dark-mode .achievement-card.selected {
+    background-color: #1E3A8A !important;
+    border-color: #60A5FA !important;
+}
+
+/* Toggle button */
+body.dark-mode #dark-mode-toggle {
+    background-color: #374151 !important;
+}
+
+body.dark-mode #dark-mode-toggle:hover {
+    background-color: #4B5563 !important;
+}
+
+body.dark-mode #dark-mode-toggle i {
+    color: #F3F4F6 !important;
+}
+
+/* Mobile navigation */
+body.dark-mode #student-mobile-nav {
+    background-color: rgba(31, 41, 55, 0.9) !important;
+    border-color: #374151 !important;
+}
+
+/* Profile dropdown */
+body.dark-mode #profile-dropdown-menu {
+    background-color: #1F2937 !important;
+    border-color: #374151 !important;
+}
+
+/* Collaborate tabs */
+body.dark-mode .collaborate-tab-btn {
+    color: #D1D5DB !important;
+}
+
+body.dark-mode .collaborate-tab-btn.active {
+    color: #60A5FA !important;
+    border-bottom-color: #60A5FA !important;
+}
+
+/* Chat messages */
+body.dark-mode .chat-message.received .message-bubble {
+    background-color: #374151 !important;
+    color: #F3F4F6 !important;
+}
+
+/* Status badges */
+body.dark-mode .status-pending {
+    background-color: #451A03 !important;
+    color: #FEF3C7 !important;
+}
+
+body.dark-mode .status-approved {
+    background-color: #064E3B !important;
+    color: #D1FAE5 !important;
+}
+
+body.dark-mode .status-rejected {
+    background-color: #7F1D1D !important;
+    color: #FEE2E2 !important;
+}
+
+/* Input placeholders */
+body.dark-mode input::placeholder,
+body.dark-mode textarea::placeholder {
+    color: #9CA3AF !important;
 }

@@ -9,9 +9,9 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-   <link rel="stylesheet" href="student-dashboard.css">
+    <link rel="stylesheet" href="student-dashboard.css">
 </head>
-<body class="antialiased">
+<body class="antialiased transition-colors duration-300">
 
     <div id="student-view" class="role-view bg-gray-50">
         
@@ -31,8 +31,35 @@
                 </div>
 
                 <div class="flex items-center space-x-4">
-                    <button id="logout-btn" class="text-gray-500 hover:text-blue-600 transition-colors"><i data-lucide="log-out" class="w-6 h-6"></i></button>
-                    <button id="profile-avatar-btn"><img src="https://i.pravatar.cc/120?u=jane" alt="User Avatar" class="w-9 h-9 rounded-full border-2 border-white shadow"></button>
+                    <!-- Dark Mode Toggle -->
+                    <button id="dark-mode-toggle" class="p-2 rounded-full bg-gray-100 hover:bg-gray-200 transition">
+                        <i data-lucide="moon" class="w-6 h-6"></i>
+                    </button>
+
+                    <!-- UPDATED: Profile dropdown instead of separate logout and profile buttons -->
+                    <div class="relative">
+                        <button id="profile-dropdown-btn" class="flex items-center space-x-2 p-1 rounded-full hover:bg-gray-100 transition">
+                            <img src="images/studentprofile.png" alt="User Avatar" class="w-9 h-9 rounded-full border-2 border-white shadow">
+                        </button>
+                        
+                        <!-- Profile Dropdown Menu -->
+                        <div id="profile-dropdown-menu" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 z-50">
+                            <div class="p-3 border-b border-gray-100">
+                                <p class="font-semibold text-gray-800">Arpan Kumar Panda</p>
+                                <p class="text-sm text-gray-500">Student</p>
+                            </div>
+                            <div class="py-2">
+                                <button id="profile-menu-btn" class="w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-50 flex items-center space-x-2">
+                                    <i data-lucide="user" class="w-4 h-4"></i>
+                                    <span>My Profile</span>
+                                </button>
+                                <button id="logout-menu-btn" class="w-full text-left px-4 py-2 text-red-600 hover:bg-red-50 flex items-center space-x-2">
+                                    <i data-lucide="log-out" class="w-4 h-4"></i>
+                                    <span>Logout</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </nav>
         </header>
@@ -42,7 +69,7 @@
             <div class="student-page" id="student-home-page">
                 <div class="p-6 md:p-8 mb-8 rounded-2xl bg-blue-100 border border-blue-200 flex flex-col md:flex-row justify-between items-center text-center md:text-left">
                     <div>
-                        <h1 class="text-2xl md:text-3xl font-bold text-gray-800">Welcome back, Alex!</h1>
+                        <h1 class="text-2xl md:text-3xl font-bold text-gray-800">Welcome back, Arpan</h1>
                         <p class="text-gray-600 mt-1">Your personal dashboard for campus life.</p>
                     </div>
                     <button class="bg-blue-600 text-white px-6 py-3 rounded-full font-semibold mt-4 md:mt-0 flex items-center space-x-2 hover:bg-blue-700 transition-transform hover:scale-105 shadow-md">
@@ -63,7 +90,7 @@
                          <div class="bg-white rounded-2xl overflow-hidden border border-gray-200 shadow-sm flex flex-col"><img src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?q=80&w=800" class="h-28 object-cover"><div class="p-4"><h3 class="font-bold">Campus Hackathon 2024</h3><span class="text-xs font-semibold bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full inline-block my-1">Hackathon</span><p class="text-sm text-gray-500 mt-1">March 2024</p></div></div>
                          <div class="bg-white rounded-2xl overflow-hidden border border-gray-200 shadow-sm flex flex-col"><img src="https://images.unsplash.com/photo-1523580494863-6f3031224c94?q=80&w=800" class="h-28 object-cover"><div class="p-4"><h3 class="font-bold">Inter-College Debate</h3><span class="text-xs font-semibold bg-green-100 text-green-700 px-2 py-1 rounded-full inline-block my-1">Competition</span><p class="text-sm text-gray-500 mt-1">February 2024</p></div></div>
                          <div class="bg-white rounded-2xl overflow-hidden border border-gray-200 shadow-sm flex flex-col"><img src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?q=80&w=800" class="h-28 object-cover"><div class="p-4"><h3 class="font-bold">Tech Innovation Summit</h3><span class="text-xs font-semibold bg-blue-100 text-blue-800 px-2 py-1 rounded-full inline-block my-1">Conference</span><p class="text-sm text-gray-500 mt-1">November 2023</p></div></div>
-                         <div class="bg-white rounded-2xl overflow-hidden border border-gray-200 shadow-sm flex flex-col"><img src="https://images.unsplash.com/photo-1560439538-519639b5fa2a?q=80&w=800" class="h-28 object-cover"><div class="p-4"><h3 class="font-bold">Student Leadership</h3><span class="text-xs font-semibold bg-purple-100 text-purple-800 px-2 py-1 rounded-full inline-block my-1">Workshop</span><p class="text-sm text-gray-500 mt-1">October 2023</p></div></div>
+                         <div class="bg-white rounded-2xl overflow-hidden border border-gray-200 shadow-sm flex flex-col"><img src="images/studentleadership.png" class="h-28 object-cover"><div class="p-4"><h3 class="font-bold">Student Leadership</h3><span class="text-xs font-semibold bg-purple-100 text-purple-800 px-2 py-1 rounded-full inline-block my-1">Workshop</span><p class="text-sm text-gray-500 mt-1">October 2023</p></div></div>
                     </div>
                 </div>
             </div>
@@ -87,8 +114,28 @@
             <div class="student-page hidden" id="student-collaborate-page">
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
                     <h1 class="text-2xl font-bold text-gray-800">Find Teammates</h1>
-                    <div class="relative w-full sm:w-auto"><input type="text" placeholder="Find teammates by skill..." class="w-full sm:w-64 p-3 pl-10 rounded-full border border-gray-200 focus:ring-2 focus:ring-blue-500 outline-none"><i data-lucide="search" class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"></i></div>
+                    <div class="flex items-center gap-3">
+                        <div class="relative w-full sm:w-auto">
+                            <input type="text" placeholder="Find teammates by skill..." class="w-full sm:w-64 p-3 pl-10 rounded-full border border-gray-200 focus:ring-2 focus:ring-blue-500 outline-none">
+                            <i data-lucide="search" class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"></i>
+                        </div>
+                        <!-- NEW: Add collaboration post button -->
+                        <button id="add-collaboration-btn" class="bg-blue-600 text-white px-4 py-3 rounded-full font-semibold hover:bg-blue-700 transition flex items-center space-x-2 whitespace-nowrap">
+                            <i data-lucide="plus" class="w-5 h-5"></i>
+                            <span>Find Teammate</span>
+                        </button>
+                    </div>
                 </div>
+
+                <!-- NEW: Add tabs for different views -->
+                <div class="mb-6">
+                    <div class="flex border-b border-gray-200">
+                        <button id="tab-all-posts" class="collaborate-tab-btn px-4 py-2 font-semibold text-blue-600 border-b-2 border-blue-600">All Posts</button>
+                        <button id="tab-my-posts" class="collaborate-tab-btn px-4 py-2 font-semibold text-gray-500 hover:text-gray-700">My Posts</button>
+                        <button id="tab-interested" class="collaborate-tab-btn px-4 py-2 font-semibold text-gray-500 hover:text-gray-700">Interested In</button>
+                    </div>
+                </div>
+
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                    </div>
             </div>
@@ -99,30 +146,51 @@
                         <h1 class="text-2xl font-bold text-gray-800">Propose a New Event</h1>
                         <p class="text-gray-500 mt-2">Fill out the details below to submit your event idea for approval.</p>
                     </div>
-                    <form class="space-y-6">
-                        <div><label class="form-label">Event Title</label><input type="text" class="form-input" placeholder="e.g., Annual Tech Fest 2025"></div>
-                        <div><label class="form-label">Event Description</label><textarea rows="4" class="form-input" placeholder="Describe your event, its purpose, and target audience."></textarea></div>
-                        <div><label class="form-label">Proposed Date</label><input type="date" class="form-input"></div>
-                        <div><label class="form-label">Add Co-organizers</label><input type="text" placeholder="Select co-organizers..." class="form-input"></div>
-                        <div><label class="form-label">Select a Faculty Mentor (Optional)</label><input type="text" placeholder="Select a faculty mentor..." class="form-input"></div>
+                    <form id="organize-event-form" class="space-y-6">
+                        <div><label class="form-label">Event Title</label><input type="text" id="event-title" class="form-input" placeholder="e.g., Annual Tech Fest 2025" required></div>
+                        <div><label class="form-label">Event Description</label><textarea rows="4" id="event-description" class="form-input" placeholder="Describe your event, its purpose, and target audience." required></textarea></div>
+                        <div><label class="form-label">Proposed Date</label><input type="date" id="event-date" class="form-input" required></div>
+                        <div><label class="form-label">Event Category</label>
+                            <select id="event-category" class="form-input" required>
+                                <option value="">Select category</option>
+                                <option value="Technical">Technical</option>
+                                <option value="Cultural">Cultural</option>
+                                <option value="Sports">Sports</option>
+                                <option value="Academic">Academic</option>
+                                <option value="Social">Social</option>
+                                <option value="Workshop">Workshop</option>
+                            </select>
+                        </div>
+                        <div><label class="form-label">Add Co-organizers (Optional)</label><input type="text" id="event-coorganizers" placeholder="Enter email addresses, separated by commas" class="form-input"></div>
+                        <div><label class="form-label">Select a Faculty Mentor</label><input type="text" id="event-mentor" placeholder="Select a faculty mentor..." class="form-input" required></div>
+                        <!-- NEW: Add Google Form link option -->
+                        <div><label class="form-label">Registration Form Link (Optional)</label><input type="url" id="event-form-link" placeholder="https://forms.google.com/..." class="form-input"></div>
                         <button type="submit" class="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition shadow">Submit for Approval</button>
                     </form>
+                </div>
+
+                <!-- NEW: Add section to show submitted events -->
+                <div class="max-w-4xl mx-auto mt-8">
+                    <h2 class="text-xl font-bold text-gray-800 mb-4">My Submitted Events</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="submitted-events-grid">
+                        <!-- Events will be populated here -->
+                    </div>
                 </div>
             </div>
 
             <div class="student-page hidden" id="student-resume-page">
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
-    <div class="flex items-center gap-4">
-        <h1 class="text-2xl font-bold text-gray-800">Verified Achievements</h1>
-        <div class="flex items-center space-x-2">
-            <input type="checkbox" id="select-all-achievements" class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500">
-            <label for="select-all-achievements" class="text-sm font-medium text-gray-700">Select All</label>
-        </div>
-    </div>
-    <button id="download-resume-pdf-btn" class="bg-green-600 text-white px-5 py-2.5 rounded-full font-semibold flex items-center space-x-2 hover:bg-green-700 transition shadow-md">
-        <i data-lucide="download" class="w-5 h-5"></i><span>Download PDF</span>
-    </button>
-</div>
+                    <div class="flex items-center gap-4">
+                        <h1 class="text-2xl font-bold text-gray-800">Verified Achievements</h1>
+                        <div class="flex items-center space-x-2">
+                            <input type="checkbox" id="select-all-achievements" class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                            <label for="select-all-achievements" class="text-sm font-medium text-gray-700">Select All</label>
+                        </div>
+                    </div>
+                    <button id="download-resume-pdf-btn" class="bg-green-600 text-white px-5 py-2.5 rounded-full font-semibold flex items-center space-x-2 hover:bg-green-700 transition shadow-md">
+                        <i data-lucide="download" class="w-5 h-5"></i><span>Download PDF</span>
+                    </button>
+                </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     </div>
             </div>
@@ -131,27 +199,76 @@
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
                     <div class="lg:col-span-1">
                         <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm text-center">
-                            <img src="https://i.pravatar.cc/120?u=jane" alt="User Avatar" class="w-24 h-24 rounded-full mx-auto mb-4">
-                            <button class="text-sm font-semibold text-blue-600 hover:underline">Upload New Picture</button>
-                            <h2 class="text-xl font-bold mt-4">Jane Doe</h2>
-                            <p class="text-gray-500">jane.doe@university.edu</p>
+                            <img id="profile-avatar-img" src="images/studentprofile.png" alt="User Avatar" class="w-24 h-24 rounded-full mx-auto mb-4">
+                            <input type="file" id="avatar-upload" accept="image/*" class="hidden">
+                            <button id="upload-avatar-btn" class="text-sm font-semibold text-blue-600 hover:underline">Upload New Picture</button>
+                            <h2 id="profile-display-name" class="text-xl font-bold mt-4">Arpan Kumar Panda</h2>
+                            <p id="profile-email" class="text-gray-500">arpan.panda126649@marwadiuniversity.ac.in</p>
                         </div>
                     </div>
                     <div class="lg:col-span-2">
                         <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
                             <h3 class="text-lg font-bold text-gray-800 mb-4">Personal Information</h3>
-                            <form class="space-y-6">
-                                <div><label class="form-label">Display Name</label><input type="text" class="form-input" value="Jane Doe"></div>
-                                <div><label class="form-label">Bio</label><textarea rows="4" class="form-input">Dedicated student at CampusSphere University, passionate about technology and community engagement. Always eager to collaborate on innovative projects and learn new skills.</textarea></div>
+                            <form id="profile-form" class="space-y-6">
+                                <div>
+                                    <label class="form-label">Official Name</label>
+                                    <input type="text" id="profile-official-name" class="form-input" value="Arpan Kumar Panda" required>
+                                </div>
+                                <div>
+                                    <label class="form-label">Bio</label>
+                                    <textarea rows="4" id="profile-bio" class="form-input">Dedicated student at CampusSphere University, passionate about technology and community engagement. Always eager to collaborate on innovative projects and learn new skills.</textarea>
+                                </div>
+                                <!-- NEW: Add academic information fields -->
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="form-label">Department</label>
+                                        <select id="profile-department" class="form-input" required>
+                                            <option value="">Select Department</option>
+                                            <option value="Computer Science">Computer Science Engineering</option>
+                                            <option value="Engineering">Mechanical Engineering</option>
+                                            <option value="Business">Electrical Engineering</option>
+                                            <option value="Arts">Civil Engineering</option>
+                                            <option value="Sciences">Management and Commerce</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="form-label">Branch</label>
+                                        <input type="text" id="profile-branch" class="form-input" placeholder="CSE" required>
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                    <div>
+                                        <label class="form-label">Semester</label>
+                                        <select id="profile-semester" class="form-input" required>
+                                            <option value="">Select</option>
+                                            <option value="1">1st</option>
+                                            <option value="2">2nd</option>
+                                            <option value="3">3rd</option>
+                                            <option value="4">4th</option>
+                                            <option value="5">5th</option>
+                                            <option value="6">6th</option>
+                                            <option value="7">7th</option>
+                                            <option value="8">8th</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="form-label">Class</label>
+                                        <input type="text" id="profile-class" class="form-input" placeholder="3EV-5  " required>
+                                    </div>
+                                    <div>
+                                        <label class="form-label">Enrollment No.</label>
+                                        <input type="text" id="profile-enrollment" class="form-input" placeholder="92400120098" required>
+                                    </div>
+                                </div>
                             </form>
                         </div>
                         <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm mt-8">
-                            <h3 class="text-lg font-bold text-gray-800 mb-4">My Skills</h3>
+                            <h3 class="text-lg font-bold text-gray-800 mb-4">My Skills <span class="text-red-500">*</span></h3>
                             <div class="flex flex-wrap gap-2 mb-4" id="skills-container">
                                 </div>
                             <div class="relative">
-                                <input type="text" id="new-skill-input" placeholder="e.g., JavaScript, Marketing, Leadership" class="form-input">
-                                <button id="add-skill-btn" class="absolute top-1/2 right-2 -translate-y-1/2 bg-blue-600 text-white px-3 py-1 rounded-md font-semibold text-sm hover:bg-blue-700">Add Skill</button>
+                                <input type="text" id="new-skill-input" placeholder="e.g., JavaScript, Marketing, Leadership" class="form-input" required>
+                                <button type="button" id="add-skill-btn" class="absolute top-1/2 right-2 -translate-y-1/2 bg-blue-600 text-white px-3 py-1 rounded-md font-semibold text-sm hover:bg-blue-700">Add Skill</button>
                             </div>
                              <div class="mt-4">
                                  <p class="text-sm text-gray-500 mb-2">Suggestions:</p>
@@ -161,7 +278,7 @@
                              </div>
                         </div>
                          <div class="mt-6 flex justify-end">
-                             <button class="bg-blue-600 text-white px-6 py-3 rounded-full font-semibold hover:bg-blue-700 transition shadow-md">Save Changes</button>
+                             <button id="save-profile-btn" class="bg-blue-600 text-white px-6 py-3 rounded-full font-semibold hover:bg-blue-700 transition shadow-md">Save Changes</button>
                          </div>
                     </div>
                 </div>
@@ -173,21 +290,133 @@
                 <button data-page="home" class="student-nav-link text-center active"><i data-lucide="home" class="w-6 h-6 mx-auto"></i><span class="text-xs font-medium">Home</span></button>
                 <button data-page="discover" class="student-nav-link text-center"><i data-lucide="search" class="w-6 h-6 mx-auto"></i><span class="text-xs font-medium">Discover</span></button>
                 <button data-page="collaborate" class="student-nav-link text-center"><i data-lucide="users" class="w-6 h-6 mx-auto"></i><span class="text-xs font-medium">Collaborate</span></button>
-                <button data-page="organize" class="student-nav-link text-center"><i data-lucide="plus-circle" class="w-6 h-6 mx-auto"></i><span class="text-xs font-medium">Organize</span></button>
+                <button data-page="organize" class="student-nav-link text-center"><i data-lucide="calendar-plus" class="w-6 h-6 mx-auto"></i><span class="text-xs font-medium">Organize</span></button>
                 <button data-page="resume" class="student-nav-link text-center"><i data-lucide="file-text" class="w-6 h-6 mx-auto"></i><span class="text-xs font-medium">Resume</span></button>
             </div>
         </div>
-        <div id="event-details-modal" class="hidden fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
-    <div class="bg-white rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto shadow-lg relative">
-        <button id="close-event-modal-btn" class="absolute top-3 right-3 text-gray-400 hover:text-gray-700 bg-gray-100 rounded-full p-1">
-            <i data-lucide="x" class="w-6 h-6"></i>
-        </button>
-        
-        <div id="modal-content-container">
+
+        <!-- Event Details Modal -->
+        <div id="event-details-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center p-4">
+            <div class="bg-white rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto relative">
+                <button id="close-event-modal-btn" class="absolute top-4 right-4 z-10 bg-white rounded-full p-2 hover:bg-gray-100 transition">
+                    <i data-lucide="x" class="w-6 h-6"></i>
+                </button>
+                <div id="modal-content-container">
+                    <!-- Event details will be dynamically inserted here -->
+                </div>
             </div>
+        </div>
+
+        <!-- NEW: Event Registration Confirmation Modal -->
+        <div id="event-registration-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center p-4">
+            <div class="bg-white rounded-2xl max-w-md w-full p-6">
+                <div class="text-center mb-4">
+                    <i data-lucide="calendar-check" class="w-16 h-16 mx-auto text-blue-600 mb-4"></i>
+                    <h2 class="text-xl font-bold text-gray-800">Confirm Registration</h2>
+                    <p class="text-gray-600 mt-2">Are you sure you want to register for this event?</p>
+                    <p id="registration-event-title" class="font-semibold text-blue-600 mt-2"></p>
+                </div>
+                <div class="flex space-x-3">
+                    <button id="cancel-registration-btn" class="flex-1 px-4 py-2 border border-gray-300 rounded-lg font-semibold text-gray-700 hover:bg-gray-50">Cancel</button>
+                    <button id="confirm-registration-btn" class="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700">Yes, Register</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- NEW: Add Collaboration Post Modal -->
+        <div id="add-collaboration-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center p-4">
+            <div class="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+                <div class="p-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-xl font-bold text-gray-800">Find a Teammate</h2>
+                        <button id="close-collaboration-modal-btn" class="text-gray-500 hover:text-gray-700">
+                            <i data-lucide="x" class="w-6 h-6"></i>
+                        </button>
+                    </div>
+                    <form id="collaboration-form" class="space-y-4">
+                        <div>
+                            <label class="form-label">Project/Idea Title</label>
+                            <input type="text" id="collab-title" class="form-input" placeholder="e.g., AI-powered Campus Assistant" required>
+                        </div>
+                        <div>
+                            <label class="form-label">Description</label>
+                            <textarea rows="4" id="collab-description" class="form-input" placeholder="Describe your project and what kind of help you need..." required></textarea>
+                        </div>
+                        <div>
+                            <label class="form-label">Required Skills</label>
+                            <input type="text" id="collab-skills" class="form-input" placeholder="e.g., React, Python, UI Design" required>
+                        </div>
+                        <div>
+                            <label class="form-label">Number of Teammates Needed</label>
+                            <select id="collab-team-size" class="form-input" required>
+                                <option value="">Select</option>
+                                <option value="1">1 teammate</option>
+                                <option value="2">2 teammates</option>
+                                <option value="3">3 teammates</option>
+                                <option value="4">4 teammates</option>
+                                <option value="5">5+ teammates</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="form-label">Contact Form Link (Optional)</label>
+                            <input type="url" id="collab-form-link" class="form-input" placeholder="https://forms.google.com/...">
+                            <p class="text-xs text-gray-500 mt-1">If provided, interested students will be redirected to your form</p>
+                        </div>
+                        <div class="flex space-x-3">
+                            <button type="button" id="cancel-collaboration-btn" class="flex-1 px-4 py-2 border border-gray-300 rounded-lg font-semibold text-gray-700 hover:bg-gray-50">Cancel</button>
+                            <button type="submit" class="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700">Post Request</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- NEW: Collaboration Chat Modal -->
+        <div id="collaboration-chat-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center p-4">
+            <div class="bg-white rounded-2xl max-w-2xl w-full h-[600px] flex flex-col">
+                <div class="p-4 border-b border-gray-200 flex justify-between items-center">
+                    <div>
+                        <h2 class="text-lg font-bold text-gray-800" id="chat-title">Project Discussion</h2>
+                        <p class="text-sm text-gray-500" id="chat-subtitle">with John Doe</p>
+                    </div>
+                    <button id="close-chat-modal-btn" class="text-gray-500 hover:text-gray-700">
+                        <i data-lucide="x" class="w-6 h-6"></i>
+                    </button>
+                </div>
+                <div class="flex-1 p-4 overflow-y-auto" id="chat-messages">
+                    <!-- Messages will be populated here -->
+                </div>
+                <div class="p-4 border-t border-gray-200">
+                    <div class="flex space-x-2">
+                        <input type="text" id="chat-input" placeholder="Type your message..." class="flex-1 p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+                        <button id="send-message-btn" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
+                            <i data-lucide="send" class="w-5 h-5"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- NEW: Success/Error Notification -->
+        <div id="notification" class="fixed top-4 right-4 z-50 hidden">
+            <div class="bg-white border border-gray-200 rounded-lg shadow-lg p-4 max-w-sm">
+                <div class="flex items-start">
+                    <div id="notification-icon" class="flex-shrink-0 mr-3 mt-0.5">
+                        <!-- Icon will be inserted here -->
+                    </div>
+                    <div class="flex-1">
+                        <p id="notification-title" class="font-semibold text-gray-800"></p>
+                        <p id="notification-message" class="text-sm text-gray-600 mt-1"></p>
+                    </div>
+                    <button id="close-notification-btn" class="flex-shrink-0 ml-2 text-gray-400 hover:text-gray-600">
+                        <i data-lucide="x" class="w-4 h-4"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
     </div>
-</div>
-    </div>
+
     <script src="student-dashboard.js"></script>
 </body>
 </html>

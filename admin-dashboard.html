@@ -5,16 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard - CampusSphere</title>
     
-    <!-- Tailwind CSS for styling -->
+    <!-- External Libraries -->
     <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Chart.js for Analytics Charts -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    
-    <!-- Lucide Icons Library -->
     <script src="https://unpkg.com/lucide@latest"></script>
-    
-    <!-- Your Custom Stylesheet -->
     <link rel="stylesheet" href="admin-dashboard.css">
 </head>
 <body class="bg-gray-100">
@@ -22,11 +16,17 @@
     <div class="flex min-h-screen">
         <!-- Sidebar Navigation -->
         <aside class="w-64 bg-white shadow-md fixed h-full flex flex-col">
+            <!-- Sidebar Header -->
             <div class="p-4 border-b">
-                <h1 class="text-xl font-bold text-blue-600">CampusSphere</h1>
+                <div class="flex items-center space-x-2">
+                    <span class="bg-blue-600 text-white w-8 h-8 flex items-center justify-center rounded-lg font-bold text-lg">C</span>
+                    <h1 class="text-lg font-bold text-gray-800">CampusSphere</h1>
+                </div>
             </div>
+            
+            <!-- Navigation Menu -->
             <nav class="flex flex-col mt-4 flex-grow overflow-y-auto">
-                <button data-page="analytics" class="admin-nav-link flex items-center gap-3 px-4 py-3 text-left">
+                <button data-page="analytics" class="admin-nav-link active flex items-center gap-3 px-4 py-3 text-left">
                     <i data-lucide="bar-chart-2" class="w-5 h-5"></i> Analytics Dashboard
                 </button>
                 <button data-page="users" class="admin-nav-link flex items-center gap-3 px-4 py-3 text-left">
@@ -41,113 +41,480 @@
                 <button data-page="settings" class="admin-nav-link flex items-center gap-3 px-4 py-3 text-left">
                     <i data-lucide="settings" class="w-5 h-5"></i> Platform Settings
                 </button>
-                <button data-page="profile" class="admin-nav-link flex items-center gap-3 px-4 py-3 text-left">
-                    <i data-lucide="user" class="w-5 h-5"></i> My Profile
-                </button>
             </nav>
+            
+            <!-- UPDATED: Profile dropdown in footer -->
+            <div class="p-4 border-t">
+                <div class="relative">
+                    <button id="admin-profile-dropdown-btn" class="admin-nav-link w-full flex items-center gap-3 px-4 py-3 text-left">
+                        <i data-lucide="user" class="w-5 h-5"></i> My Profile
+                    </button>
+                    <!-- Profile Dropdown Menu -->
+                    <div id="admin-profile-dropdown-menu" class="hidden absolute bottom-full left-0 right-0 mb-2 bg-white rounded-lg shadow-lg border border-gray-200 z-50">
+                        <div class="p-3 border-b border-gray-100">
+                            <p class="font-semibold text-gray-800">Admin User</p>
+                            <p class="text-sm text-gray-500">ABCD</p>
+                        </div>
+                        <div class="py-2">
+                            <button id="admin-profile-menu-btn" class="w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-50 flex items-center space-x-2">
+                                <i data-lucide="user" class="w-4 h-4"></i>
+                                <span>My Profile</span>
+                            </button>
+                            <button id="admin-logout-menu-btn" class="w-full text-left px-4 py-2 text-red-600 hover:bg-red-50 flex items-center space-x-2">
+                                <i data-lucide="log-out" class="w-4 h-4"></i>
+                                <span>Logout</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </aside>
 
-        <!-- Main Content -->
+        <!-- Main Content Area -->
         <div class="ml-64 flex-1 flex flex-col">
-            <!-- Header -->
+            <!-- Top Header -->
             <header class="bg-white shadow-sm sticky top-0 z-10 flex justify-between items-center px-6 py-3 border-b">
+                <!-- Page Title -->
                 <h1 id="admin-page-title" class="text-xl font-semibold text-gray-800">Analytics Dashboard</h1>
+                
+                <!-- Header Actions -->
                 <div class="flex items-center gap-4">
-                    <i data-lucide="bell" class="w-6 h-6 text-gray-600 cursor-pointer"></i>
-                    <div class="w-9 h-9 bg-gray-300 rounded-full cursor-pointer"></div>
+                    <!-- Dark Mode Toggle -->
+                    <button id="dark-mode-toggle" class="p-2 rounded-full bg-gray-100 hover:bg-gray-200 transition">
+                        <i data-lucide="moon" class="w-6 h-6"></i>
+                    </button>
+                    
+                    <!-- Notifications -->
+                    <button id="admin-notifications-btn" class="text-gray-600 hover:text-blue-600 relative">
+                        <i data-lucide="bell" class="w-6 h-6"></i>
+                        <!-- NEW: Notification badge -->
+                        <span id="admin-notification-badge" class="hidden absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">2</span>
+                    </button>
                 </div>
             </header>
 
-            <!-- Content Pages Wrapper -->
+            <!-- Main Content Wrapper -->
             <main class="p-6 overflow-y-auto">
-                <!-- Analytics Page -->
+                
+                <!-- Analytics Page (Default) - UPDATED: Enhanced with comparisons -->
                 <div id="admin-analytics-page" class="admin-page space-y-6">
-                    <h2 class="text-2xl font-bold mb-4 text-gray-800">Campus-Wide Analytics</h2>
+                    <div class="flex justify-between items-center">
+                        <h2 class="text-2xl font-bold text-gray-800">Campus-Wide Analytics</h2>
+                        <!-- NEW: Time period selector -->
+                        <select id="analytics-period" class="px-3 py-2 border rounded-lg bg-white">
+                            <option value="month">This Month</option>
+                            <option value="semester">This Semester</option>
+                            <option value="year" selected>This Year</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Statistics Cards Grid - UPDATED: Enhanced with growth indicators -->
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                        <div class="bg-white p-4 rounded-xl shadow-sm"><h3 class="text-sm text-gray-500">Total Student Participation</h3><p class="text-3xl font-bold mt-2">12,453</p></div>
-                        <div class="bg-white p-4 rounded-xl shadow-sm"><h3 class="text-sm text-gray-500">Total Events Organized</h3><p class="text-3xl font-bold mt-2">274</p></div>
-                        <div class="bg-white p-4 rounded-xl shadow-sm"><h3 class="text-sm text-gray-500">Overall Engagement Rate (%)</h3><p class="text-3xl font-bold mt-2">88%</p></div>
-                        <div class="bg-white p-4 rounded-xl shadow-sm"><h3 class="text-sm text-gray-500">Most Active Department</h3><p class="text-3xl font-bold mt-2">CSE</p></div>
-                    </div>
-                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                        <div class="bg-white p-4 rounded-xl shadow-sm lg:col-span-2"><h3 class="text-lg font-semibold mb-4 text-gray-800">Participation Over Time (Monthly)</h3><div class="h-64"><canvas id="participation-chart"></canvas></div></div>
-                        <div class="bg-white p-4 rounded-xl shadow-sm"><h3 class="text-lg font-semibold mb-4 text-gray-800">Events by Category</h3><div class="h-64 flex justify-center"><canvas id="category-chart"></canvas></div></div>
-                    </div>
-                    <div class="bg-white p-4 rounded-xl shadow-sm"><h3 class="text-lg font-semibold mb-4 text-gray-800">Departmental Engagement</h3><div class="h-64"><canvas id="department-chart"></canvas></div></div>
-                </div>
-
-                <!-- User Management Page -->
-                <div id="admin-users-page" class="admin-page hidden space-y-4">
-                    <h2 class="text-2xl font-bold text-gray-800">User Management</h2>
-                    <div class="flex gap-4 border-b">
-                        <button id="faculty-tab-btn" class="pb-2 font-semibold">Faculty Verification</button>
-                        <button id="all-users-tab-btn" class="pb-2 font-semibold text-gray-500">All Users</button>
-                    </div>
-                    <div class="overflow-x-auto border rounded-lg bg-white"><table class="w-full text-sm text-left text-gray-500">
-                        <thead class="text-xs text-gray-700 uppercase bg-gray-50"><tr>
-                            <th scope="col" class="px-6 py-3">Name</th><th scope="col" class="px-6 py-3">Role</th><th scope="col" class="px-6 py-3">Department</th><th scope="col" class="px-6 py-3">Status</th><th scope="col" class="px-6 py-3">Actions</th>
-                        </tr></thead>
-                        <tbody id="users-table-body">
-                            <!-- JS will populate this table body -->
-                        </tbody>
-                    </table></div>
-                </div>
-
-                <!-- Event Governance Page -->
-                <div id="admin-events-page" class="admin-page hidden space-y-4">
-                    <h2 class="text-2xl font-bold text-gray-800">All Campus Events</h2>
-                     <div class="overflow-x-auto border rounded-lg bg-white"><table class="w-full text-sm text-left text-gray-500">
-                        <thead class="text-xs text-gray-700 uppercase bg-gray-50"><tr>
-                            <th scope="col" class="px-6 py-3">Event Name</th><th scope="col" class="px-6 py-3">Organizing Dept.</th><th scope="col" class="px-6 py-3">Category</th><th scope="col" class="px-6 py-3">Participants</th><th scope="col" class="px-6 py-3">Status</th><th scope="col" class="px-6 py-3">Feature on Homepage</th>
-                        </tr></thead>
-                        <tbody id="events-table-body">
-                            <!-- JS will populate this table body -->
-                        </tbody>
-                    </table></div>
-                </div>
-
-                <!-- Announcements Page -->
-                <div id="admin-announcements-page" class="admin-page hidden space-y-4">
-                    <h2 class="text-2xl font-bold text-gray-800">Send a Campus-Wide Announcement</h2>
-                    <div class="bg-white p-6 rounded-lg shadow-sm">
-                        <textarea class="w-full p-3 border rounded-lg" rows="5" placeholder="Write your announcement..."></textarea>
-                        <button class="mt-4 px-4 py-2 rounded-lg font-semibold transition bg-blue-600 hover:bg-blue-700 text-white">Send to All Users</button>
-                        <p class="text-sm text-gray-600 mt-2">This will send a notification and display a banner to every user on the platform.</p>
-                    </div>
-                </div>
-
-                <!-- Settings Page -->
-                <div id="admin-settings-page" class="admin-page hidden space-y-6">
-                    <h2 class="text-2xl font-bold text-gray-800">Platform Settings & Branding</h2>
-                    <div class="bg-white p-6 rounded-lg shadow-sm">
-                        <h3 class="font-semibold mb-2">University Branding</h3>
-                        <input placeholder="University Name" class="w-full p-3 border rounded-lg mb-2">
-                        <button class="px-4 py-2 rounded-lg font-semibold transition border border-gray-300 bg-white text-gray-700 hover:bg-gray-50">Upload Logo</button>
-                    </div>
-                    <div class="bg-white p-6 rounded-lg shadow-sm">
-                        <h3 class="font-semibold mb-2">Verified Resume Seal</h3>
-                        <p class="text-sm text-gray-600 mb-2">This seal will appear on verified student resumes.</p>
-                        <button class="px-4 py-2 rounded-lg font-semibold transition border border-gray-300 bg-white text-gray-700 hover:bg-gray-50">Upload Seal</button>
-                    </div>
-                    <button class="px-4 py-2 rounded-lg font-semibold transition bg-blue-600 hover:bg-blue-700 text-white">Save Changes</button>
-                </div>
-
-                <!-- Profile Page -->
-                <div id="admin-profile-page" class="admin-page hidden space-y-6">
-                    <h2 class="text-2xl font-bold text-gray-800">My Profile</h2>
-                    <div class="bg-white p-6 rounded-lg shadow-sm">
-                        <div class="space-y-4">
-                            <input placeholder="Display Name" class="w-full p-3 border rounded-lg">
-                            <input placeholder="Change Password" type="password" class="w-full p-3 border rounded-lg">
-                            <input placeholder="Manage Notifications" class="w-full p-3 border rounded-lg">
-                            <button class="px-4 py-2 rounded-lg font-semibold transition bg-blue-600 hover:bg-blue-700 text-white">Save Changes</button>
+                        <!-- Student Participation Card -->
+                        <div class="bg-white p-4 rounded-xl shadow-sm">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <h3 class="text-sm text-gray-500">Total Student Participation</h3>
+                                    <p class="text-3xl font-bold mt-2">12,453</p>
+                                </div>
+                                <div class="bg-green-100 text-green-600 px-2 py-1 rounded-full text-xs font-semibold">
+                                    +15%
+                                </div>
+                            </div>
+                            <p class="text-xs text-gray-500 mt-2">vs previous year</p>
                         </div>
+                        
+                        <!-- Total Events Card -->
+                        <div class="bg-white p-4 rounded-xl shadow-sm">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <h3 class="text-sm text-gray-500">Total Events Organized</h3>
+                                    <p class="text-3xl font-bold mt-2">274</p>
+                                </div>
+                                <div class="bg-blue-100 text-blue-600 px-2 py-1 rounded-full text-xs font-semibold">
+                                    +8%
+                                </div>
+                            </div>
+                            <p class="text-xs text-gray-500 mt-2">vs previous year</p>
+                        </div>
+                        
+                        <!-- Engagement Rate Card -->
+                        <div class="bg-white p-4 rounded-xl shadow-sm">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <h3 class="text-sm text-gray-500">Overall Engagement Rate</h3>
+                                    <p class="text-3xl font-bold mt-2">88%</p>
+                                </div>
+                                <div class="bg-yellow-100 text-yellow-600 px-2 py-1 rounded-full text-xs font-semibold">
+                                    +3%
+                                </div>
+                            </div>
+                            <p class="text-xs text-gray-500 mt-2">vs previous year</p>
+                        </div>
+                        
+                        <!-- Most Active Department Card -->
+                        <div class="bg-white p-4 rounded-xl shadow-sm">
+                            <h3 class="text-sm text-gray-500">Most Active Department</h3>
+                            <p class="text-3xl font-bold mt-2">CSE</p>
+                            <p class="text-xs text-gray-500 mt-2">1,850 participants</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Charts Grid -->
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                        <!-- Participation Over Time Chart -->
+                        <div class="bg-white p-4 rounded-xl shadow-sm lg:col-span-2">
+                            <h3 class="text-lg font-semibold mb-4 text-gray-800">Participation Trends</h3>
+                            <div class="h-64">
+                                <canvas id="participation-chart"></canvas>
+                            </div>
+                        </div>
+                        
+                        <!-- Events by Category Chart -->
+                        <div class="bg-white p-4 rounded-xl shadow-sm">
+                            <h3 class="text-lg font-semibold mb-4 text-gray-800">Events by Category</h3>
+                            <div class="h-64 flex justify-center">
+                                <canvas id="category-chart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Department Comparison Grid -->
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <!-- Departmental Engagement Chart -->
+                        <div class="bg-white p-4 rounded-xl shadow-sm">
+                            <h3 class="text-lg font-semibold mb-4 text-gray-800">Department Participation</h3>
+                            <div class="h-64">
+                                <canvas id="department-chart"></canvas>
+                            </div>
+                        </div>
+                        
+                        <!-- NEW: Department Comparison Table -->
+                        <div class="bg-white p-4 rounded-xl shadow-sm">
+                            <h3 class="text-lg font-semibold mb-4 text-gray-800">Department Rankings</h3>
+                            <div class="space-y-3" id="department-rankings">
+                                <!-- Rankings will be populated dynamically -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- User Management Page - UPDATED: Enhanced with approval workflow -->
+                <div id="admin-users-page" class="admin-page hidden space-y-4">
+                    <div class="flex justify-between items-center">
+                        <h2 class="text-2xl font-bold text-gray-800">User Management</h2>
+                        <!-- NEW: User statistics -->
+                        <div class="flex gap-4 text-sm">
+                            <div class="text-center">
+                                <p class="font-semibold text-blue-600" id="pending-faculty-count">0</p>
+                                <p class="text-gray-500">Pending Faculty</p>
+                            </div>
+                            <div class="text-center">
+                                <p class="font-semibold text-green-600" id="total-users-count">0</p>
+                                <p class="text-gray-500">Total Users</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Tab Navigation -->
+                    <div class="flex gap-4 border-b">
+                        <button id="faculty-tab-btn" class="user-tab-btn pb-2 font-semibold active">Faculty Verification</button>
+                        <button id="all-users-tab-btn" class="user-tab-btn pb-2 font-semibold text-gray-500">All Users</button>
+                    </div>
+                    
+                    <!-- Users Table -->
+                    <div class="overflow-x-auto border rounded-lg bg-white">
+                        <table class="w-full text-sm text-left text-gray-500">
+                            <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+                                <tr>
+                                    <th scope="col" class="px-6 py-3">Name</th>
+                                    <th scope="col" class="px-6 py-3">Email</th>
+                                    <th scope="col" class="px-6 py-3">Role</th>
+                                    <th scope="col" class="px-6 py-3">Department</th>
+                                    <th scope="col" class="px-6 py-3">Status</th>
+                                    <th scope="col" class="px-6 py-3">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="users-table-body">
+                                <!-- JavaScript will populate this table body -->
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <!-- NEW: Empty state for faculty verification -->
+                    <div id="no-pending-faculty" class="hidden text-center py-12">
+                        <i data-lucide="user-check" class="w-16 h-16 mx-auto text-gray-300 mb-4"></i>
+                        <h3 class="text-lg font-semibold text-gray-800 mb-2">All Faculty Verified</h3>
+                        <p class="text-gray-500">No pending faculty registrations require approval.</p>
+                    </div>
+                </div>
+
+                <!-- Event Governance Page - UPDATED: Enhanced with homepage control -->
+                <div id="admin-events-page" class="admin-page hidden space-y-4">
+                    <div class="flex justify-between items-center">
+                        <h2 class="text-2xl font-bold text-gray-800">Event Governance</h2>
+                        <!-- NEW: Event statistics -->
+                        <div class="flex gap-4 text-sm">
+                            <div class="text-center">
+                                <p class="font-semibold text-blue-600" id="featured-events-count">0</p>
+                                <p class="text-gray-500">Featured Events</p>
+                            </div>
+                            <div class="text-center">
+                                <p class="font-semibold text-green-600" id="total-events-count">0</p>
+                                <p class="text-gray-500">Total Events</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Events Table -->
+                    <div class="overflow-x-auto border rounded-lg bg-white">
+                        <table class="w-full text-sm text-left text-gray-500">
+                            <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+                                <tr>
+                                    <th scope="col" class="px-6 py-3">Event Name</th>
+                                    <th scope="col" class="px-6 py-3">Organizer</th>
+                                    <th scope="col" class="px-6 py-3">Category</th>
+                                    <th scope="col" class="px-6 py-3">Participants</th>
+                                    <th scope="col" class="px-6 py-3">Status</th>
+                                    <th scope="col" class="px-6 py-3">Feature on Homepage</th>
+                                </tr>
+                            </thead>
+                            <tbody id="events-table-body">
+                                <!-- JavaScript will populate this table body -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Announcements Page - UPDATED: Enhanced with targeting -->
+                <div id="admin-announcements-page" class="admin-page hidden space-y-6">
+                    <h2 class="text-2xl font-bold text-gray-800">Campus Announcements</h2>
+                    
+                    <!-- Announcement Form -->
+                    <div class="bg-white p-6 rounded-lg shadow-sm">
+                        <h3 class="text-lg font-semibold mb-4">Create New Announcement</h3>
+                        <form id="announcement-form" class="space-y-4">
+                            <div>
+                                <label class="form-label">Announcement Title</label>
+                                <input type="text" id="announcement-title" class="form-input" placeholder="Enter announcement title..." required>
+                            </div>
+                            <div>
+                                <label class="form-label">Message</label>
+                                <textarea id="announcement-message" class="form-input" rows="4" placeholder="Write your announcement..." required></textarea>
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="form-label">Target Audience</label>
+                                    <select id="announcement-target" class="form-input" required>
+                                        <option value="">Select audience</option>
+                                        <option value="all">All Users</option>
+                                        <option value="students">Students Only</option>
+                                        <option value="faculty">Faculty Only</option>
+                                        <option value="admins">Administrators Only</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="form-label">Priority Level</label>
+                                    <select id="announcement-priority" class="form-input" required>
+                                        <option value="normal">Normal</option>
+                                        <option value="important">Important</option>
+                                        <option value="urgent">Urgent</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="flex items-center space-x-3">
+                                <input type="checkbox" id="announcement-banner" class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                                <label for="announcement-banner" class="text-sm font-medium text-gray-700">Display as banner on homepage</label>
+                            </div>
+                            <button type="submit" class="px-6 py-2 rounded-lg font-semibold bg-blue-600 hover:bg-blue-700 text-white">Send Announcement</button>
+                        </form>
+                    </div>
+                    
+                    <!-- NEW: Recent Announcements -->
+                    <div class="bg-white p-6 rounded-lg shadow-sm">
+                        <h3 class="text-lg font-semibold mb-4">Recent Announcements</h3>
+                        <div id="recent-announcements" class="space-y-3">
+                            <!-- Recent announcements will be populated here -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Platform Settings Page - UPDATED: Enhanced settings -->
+                <div id="admin-settings-page" class="admin-page hidden space-y-6">
+                    <h2 class="text-2xl font-bold text-gray-800">Platform Settings</h2>
+                    
+                    <!-- University Branding Section -->
+                    <div class="bg-white p-6 rounded-lg shadow-sm">
+                        <h3 class="font-semibold mb-4">University Branding</h3>
+                        <form id="branding-form" class="space-y-4">
+                            <div>
+                                <label class="form-label">University Name</label>
+                                <input type="text" id="university-name" value="CampusSphere University" class="form-input" required>
+                            </div>
+                            <div>
+                                <label class="form-label">University Logo</label>
+                                <div class="flex items-center space-x-4">
+                                    <div class="w-16 h-16 bg-gray-200 rounded-lg flex items-center justify-center">
+                                        <i data-lucide="image" class="w-6 h-6 text-gray-400"></i>
+                                    </div>
+                                    <input type="file" id="logo-upload" accept="image/*" class="hidden">
+                                    <button type="button" id="upload-logo-btn" class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50">Upload Logo</button>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="form-label">Primary Color</label>
+                                <input type="color" id="primary-color" value="#2563EB" class="form-input h-12">
+                            </div>
+                        </form>
+                    </div>
+                    
+                    <!-- Resume Seal Section -->
+                    <div class="bg-white p-6 rounded-lg shadow-sm">
+                        <h3 class="font-semibold mb-4">Verified Resume Seal</h3>
+                        <p class="text-sm text-gray-600 mb-4">This seal will appear on verified student resumes and certificates.</p>
+                        <div class="flex items-center space-x-4">
+                            <div class="w-20 h-20 bg-gray-200 rounded-full flex items-center justify-center">
+                                <i data-lucide="shield-check" class="w-8 h-8 text-gray-400"></i>
+                            </div>
+                            <div>
+                                <input type="file" id="seal-upload" accept="image/*" class="hidden">
+                                <button type="button" id="upload-seal-btn" class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50">Upload Seal</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- NEW: System Settings -->
+                    <div class="bg-white p-6 rounded-lg shadow-sm">
+                        <h3 class="font-semibold mb-4">System Settings</h3>
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <label class="font-medium text-gray-700">Auto-approve student events</label>
+                                    <p class="text-sm text-gray-500">Automatically approve events from verified student organizations</p>
+                                </div>
+                                <div class="toggle-switch">
+                                    <input type="checkbox" id="auto-approve-events" class="toggle-checkbox">
+                                    <label for="auto-approve-events" class="toggle-label"></label>
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <label class="font-medium text-gray-700">Require faculty approval for all events</label>
+                                    <p class="text-sm text-gray-500">All events must be approved by faculty before going live</p>
+                                </div>
+                                <div class="toggle-switch">
+                                    <input type="checkbox" id="require-faculty-approval" class="toggle-checkbox" checked>
+                                    <label for="require-faculty-approval" class="toggle-label"></label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Save Button -->
+                    <div class="flex justify-end">
+                        <button id="save-settings-btn" class="px-6 py-3 rounded-lg font-semibold bg-blue-600 hover:bg-blue-700 text-white">Save All Settings</button>
+                    </div>
+                </div>
+
+                <!-- Profile Page - UPDATED: Enhanced admin profile -->
+                <div id="admin-profile-page" class="admin-page hidden space-y-6">
+                    <h2 class="text-2xl font-bold text-gray-800">Administrator Profile</h2>
+                    
+                    <!-- Profile Form -->
+                    <div class="bg-white p-6 rounded-lg shadow-sm">
+                        <h3 class="text-lg font-semibold mb-4">Personal Information</h3>
+                        <form id="admin-profile-form" class="space-y-4">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="form-label">Display Name</label>
+                                    <input type="text" id="admin-name" value="System Administrator" class="form-input" required>
+                                </div>
+                                <div>
+                                    <label class="form-label">Email Address</label>
+                                    <input type="email" id="admin-email" value="admin@campussphere.edu" class="form-input" required>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="form-label">Designation</label>
+                                <input type="text" id="admin-designation" value="System Administrator" class="form-input" required>
+                            </div>
+                            <div>
+                                <label class="form-label">Bio</label>
+                                <textarea id="admin-bio" rows="3" class="form-input" placeholder="Enter a brief description about yourself...">Experienced system administrator responsible for managing the CampusSphere platform and ensuring optimal user experience for students and faculty.</textarea>
+                            </div>
+                        </form>
+                    </div>
+                    
+                    <!-- NEW: Security Settings -->
+                    <div class="bg-white p-6 rounded-lg shadow-sm">
+                        <h3 class="text-lg font-semibold mb-4">Security Settings</h3>
+                        <div class="space-y-4">
+                            <div>
+                                <label class="form-label">Change Password</label>
+                                <input type="password" placeholder="Enter new password" class="form-input">
+                            </div>
+                            <div>
+                                <label class="form-label">Confirm Password</label>
+                                <input type="password" placeholder="Confirm new password" class="form-input">
+                            </div>
+                            <div class="flex items-center space-x-3">
+                                <input type="checkbox" id="two-factor-auth" class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                                <label for="two-factor-auth" class="text-sm font-medium text-gray-700">Enable Two-Factor Authentication</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Save Button -->
+                    <div class="flex justify-end">
+                        <button id="save-profile-btn" class="px-6 py-3 rounded-lg font-semibold bg-blue-600 hover:bg-blue-700 text-white">Save Changes</button>
                     </div>
                 </div>
             </main>
         </div>
     </div>
 
+    <!-- NEW: User Approval Modal -->
+    <div id="user-approval-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-md w-full p-6">
+            <div class="text-center mb-4">
+                <div id="user-approval-icon" class="w-16 h-16 mx-auto mb-4">
+                    <i data-lucide="user-check" class="w-16 h-16 text-blue-600"></i>
+                </div>
+                <h2 class="text-xl font-bold text-gray-800">Faculty Approval</h2>
+                <p class="text-gray-600 mt-2">Are you sure you want to approve this faculty member?</p>
+                <p id="user-approval-name" class="font-semibold text-blue-600 mt-2"></p>
+            </div>
+            <div class="space-y-3">
+                <button id="confirm-approval-btn" class="w-full px-4 py-3 bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700">
+                    Yes, Approve Faculty
+                </button>
+                <button id="deny-approval-btn" class="w-full px-4 py-3 bg-red-600 text-white rounded-lg font-semibold hover:bg-red-700">
+                    Deny Registration
+                </button>
+                <button id="cancel-approval-btn" class="w-full px-4 py-2 border border-gray-300 rounded-lg font-semibold text-gray-700 hover:bg-gray-50">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success/Error Notification -->
+    <div id="admin-notification" class="fixed top-4 right-4 z-50 hidden">
+        <div class="bg-white border border-gray-200 rounded-lg shadow-lg p-4 max-w-sm">
+            <div class="flex items-start">
+                <div id="admin-notification-icon" class="flex-shrink-0 mr-3 mt-0.5">
+                    <!-- Icon will be inserted here -->
+                </div>
+                <div class="flex-1">
+                    <p id="admin-notification-title" class="font-semibold text-gray-800"></p>
+                    <p id="admin-notification-message" class="text-sm text-gray-600 mt-1"></p>
+                </div>
+                <button id="close-admin-notification-btn" class="flex-shrink-0 ml-2 text-gray-400 hover:text-gray-600">
+                    <i data-lucide="x" class="w-4 h-4"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
     <script src="admin-dashboard.js"></script>
 </body>
 </html>
